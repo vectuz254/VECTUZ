@@ -1,6 +1,14 @@
 /* ═══════════════════════════════════════════
-   VECTUZ — main.js
+   VECTUZ — main.js (With Light Mode Integration)
    ═══════════════════════════════════════════ */
+
+/* ── THEME LAUNCH GUARD (Prevents color flashing on load) ── */
+(function() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
 
 /* ── CUBE COLOURS (scrambled state per face) ── */
 const SCRAMBLED = {
@@ -48,7 +56,6 @@ function solveCube(cube) {
   btn.disabled = true;
   cube.classList.add('solving');
 
-  // Animate cubies from scrambled → solved in staggered steps
   const faces = cube.querySelectorAll('.cube-face');
   faces.forEach((face, fi) => {
     const faceName = face.dataset.face;
@@ -62,7 +69,6 @@ function solveCube(cube) {
     });
   });
 
-  // After solve completes
   const totalTime = 6 * 200 + 9 * 60 + 500;
   setTimeout(() => {
     cube.classList.remove('solving');
@@ -72,10 +78,8 @@ function solveCube(cube) {
     btn.style.color = 'var(--black)';
     btn.style.border = 'none';
 
-    // Reset after 3s
     setTimeout(() => {
       cube.classList.remove('solved');
-      const cubies = cube.querySelectorAll('.cubie');
       cube.querySelectorAll('.cube-face').forEach(face => {
         const faceName = face.dataset.face;
         face.querySelectorAll('.cubie').forEach((cubie, ci) => {
@@ -96,7 +100,6 @@ function solveCube(cube) {
 function initLoader() {
   const loader = document.getElementById('loader');
   if (!loader) return;
-  // Hide loader after 2.2s
   setTimeout(() => {
     loader.classList.add('hidden');
   }, 2200);
@@ -168,12 +171,6 @@ function initForm() {
     btn.textContent = 'Sending…';
     btn.disabled = true;
 
-    // Replace with your Formspree endpoint:
-    // const res = await fetch('https://formspree.io/f/YOUR_ID', {
-    //   method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
-    // });
-
-    // Simulate success for now
     await new Promise(r => setTimeout(r, 1000));
     btn.textContent = '✓ Message Sent!';
     btn.style.background = '#0f1318';
@@ -198,13 +195,38 @@ function initNavOffset() {
   });
 }
 
+/* ── THEME TOGGLE CONTROLLER (Light Mode Shift) ── */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (!toggleBtn) return;
+
+  const iconEl = toggleBtn.querySelector('.toggle-icon');
+  
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  if (iconEl) {
+    iconEl.textContent = currentTheme === 'light' ? '☀️' : '🌙';
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+      if (iconEl) iconEl.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'dark');
+      if (iconEl) iconEl.textContent = '🌙';
+    }
+  });
+}
+
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
-  // Build cube
   const cubeEl = document.getElementById('rubiks-cube');
   if (cubeEl) buildCube(cubeEl);
 
-  // Solve button
   const solveBtn = document.querySelector('.solve-btn');
   if (solveBtn && cubeEl) {
     solveBtn.addEventListener('click', () => solveCube(cubeEl));
@@ -215,8 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollReveal();
   initForm();
   initNavOffset();
+  initThemeToggle();
 
-  // Counter trigger on scroll
   const statsBar = document.querySelector('.stats-bar');
   if (statsBar) {
     const obs = new IntersectionObserver((entries) => {
@@ -225,4 +247,3 @@ document.addEventListener('DOMContentLoaded', () => {
     obs.observe(statsBar);
   }
 });
-                 
