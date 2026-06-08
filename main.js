@@ -161,21 +161,50 @@ function animateCounters() {
   });
 }
 
-/* ── CONTACT FORM (Formspree ready) ── */
+/* ── CONTACT FORM (Google Sheets Live Connection) ── */
 function initForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
+  
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('.form-submit');
-    btn.textContent = 'Sending…';
+    const originalText = btn.textContent;
+    
+    btn.textContent = 'Sending Project Details…';
     btn.disabled = true;
 
-    await new Promise(r => setTimeout(r, 1000));
-    btn.textContent = '✓ Message Sent!';
-    btn.style.background = '#0f1318';
-    btn.style.color = 'var(--green)';
-    form.reset();
+    // paste your long Google Script Web App URL inside the quotes below:
+    const googleScriptUrl = https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec;
+
+    try {
+      // Send data natively over to Google Sheets
+      const response = await fetch(googleScriptUrl, {
+        method: 'POST',
+        mode: 'no-cors', // Bypasses cross-origin issues with Google Redirects safely
+        body: new FormData(form)
+      });
+
+      // Show success states to the user
+      btn.textContent = '✓ Details Received Successfully!';
+      btn.style.background = '#00e87a'; // Change to green accent on success
+      btn.style.color = '#090b0e';
+      form.reset();
+      
+    } catch (error) {
+      console.error('Submission Error:', error);
+      btn.textContent = '❌ Error. Please try again.';
+      btn.style.background = 'var(--red)';
+      btn.style.color = '#ffffff';
+    } finally {
+      // Reset button state after 4 seconds so they can submit again if needed
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 4000);
+    }
   });
 }
 
