@@ -1,16 +1,14 @@
 /* ═══════════════════════════════════════════
-   VECTUZ — main.js (With Light Mode Integration)
+   VECTUZ — main.js
    ═══════════════════════════════════════════ */
 
-/* ── THEME LAUNCH GUARD (Prevents color flashing on load) ── */
+/* ── THEME GUARD (prevents flash on load) ── */
 (function() {
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  if (savedTheme === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-  }
+  const saved = localStorage.getItem('theme') || 'dark';
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
 })();
 
-/* ── CUBE COLOURS (scrambled state per face) ── */
+/* ── CUBE COLOURS ── */
 const SCRAMBLED = {
   front:  ['#e84444','#f5c842','#3a8fe8','#00c853','#f0ece4','#e87a00','#3a8fe8','#e84444','#f5c842'],
   back:   ['#f5c842','#e84444','#f0ece4','#e87a00','#3a8fe8','#00c853','#e87a00','#f5c842','#e84444'],
@@ -19,7 +17,6 @@ const SCRAMBLED = {
   top:    ['#f5c842','#3a8fe8','#e87a00','#e84444','#f0ece4','#3a8fe8','#00c853','#e84444','#f5c842'],
   bottom: ['#f0ece4','#00c853','#3a8fe8','#f5c842','#e84444','#e87a00','#3a8fe8','#f0ece4','#00c853'],
 };
-
 const SOLVED = {
   front:  Array(9).fill('#e84444'),
   back:   Array(9).fill('#e87a00'),
@@ -29,9 +26,10 @@ const SOLVED = {
   bottom: Array(9).fill('#f0ece4'),
 };
 
-/* ── BUILD CUBE ── */
-function buildCube(container) {
+/* ── BUILD CUBE (works for loader, hero, success overlay) ── */
+function buildCube(container, startSolved = false) {
   const faces = ['front','back','right','left','top','bottom'];
+  const colours = startSolved ? SOLVED : SCRAMBLED;
   faces.forEach(faceName => {
     const face = document.createElement('div');
     face.className = `cube-face ${faceName}`;
@@ -39,70 +37,103 @@ function buildCube(container) {
     for (let i = 0; i < 9; i++) {
       const cubie = document.createElement('div');
       cubie.className = 'cubie';
-      cubie.dataset.index = i;
-      cubie.style.background = SCRAMBLED[faceName][i];
+      cubie.style.background = colours[faceName][i];
       face.appendChild(cubie);
     }
     container.appendChild(face);
   });
 }
 
-/* ── SOLVE ANIMATION ── */
-function solveCube(cube) {
-  const btn = document.querySelector('.solve-btn');
-  if (cube.classList.contains('solving')) return;
-
-  btn.textContent = 'Solving…';
-  btn.disabled = true;
-  cube.classList.add('solving');
-
+/* ── ANIMATE CUBE: scrambled → solved (one pass) ── */
+function animateSolve(cube, onDone) {
   const faces = cube.querySelectorAll('.cube-face');
   faces.forEach((face, fi) => {
     const faceName = face.dataset.face;
-    const cubies   = face.querySelectorAll('.cubie');
-    cubies.forEach((cubie, ci) => {
+    face.querySelectorAll('.cubie').forEach((cubie, ci) => {
       setTimeout(() => {
         cubie.style.background = SOLVED[faceName][ci];
-        cubie.style.transform = 'scale(1.08)';
+        cubie.style.transform = 'scale(1.1)';
         setTimeout(() => { cubie.style.transform = 'scale(1)'; }, 120);
-      }, fi * 200 + ci * 60);
+      }, fi * 180 + ci * 55);
     });
   });
+  const total = 6 * 180 + 9 * 55 + 400;
+  if (onDone) setTimeout(onDone, total);
+  return total;
+}
 
-  const totalTime = 6 * 200 + 9 * 60 + 500;
-  setTimeout(() => {
-    cube.classList.remove('solving');
-    cube.classList.add('solved');
-    btn.textContent = '✓ Solved!';
-    btn.style.background = 'var(--green)';
-    btn.style.color = 'var(--black)';
-    btn.style.border = 'none';
-
-    setTimeout(() => {
-      cube.classList.remove('solved');
-      cube.querySelectorAll('.cube-face').forEach(face => {
-        const faceName = face.dataset.face;
-        face.querySelectorAll('.cubie').forEach((cubie, ci) => {
-          cubie.style.background = SCRAMBLED[faceName][ci];
-        });
-      });
-      btn.textContent = 'Solve It';
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.style.border = '';
-      btn.disabled = false;
-      cube.classList.remove('solving');
-    }, 3000);
-  }, totalTime);
+/* ── ANIMATE CUBE: solved → scrambled ── */
+function animateUnsolve(cube, onDone) {
+  const faces = cube.querySelectorAll('.cube-face');
+  faces.forEach((face, fi) => {
+    const faceName = face.dataset.face;
+    face.querySelectorAll('.cubie').forEach((cubie, ci) => {
+      setTimeout(() => {
+        cubie.style.background = SCRAMBLED[faceName][ci];
+        cubie.style.transform = 'scale(1.1)';
+        setTimeout(() => { cubie.style.transform = 'scale(1)'; }, 120);
+      }, fi * 180 + ci * 55);
+    });
+  });
+  const total = 6 * 180 + 9 * 55 + 400;
+  if (onDone) setTimeout(onDone, total);
 }
 
 /* ── LOADER ── */
 function initLoader() {
   const loader = document.getElementById('loader');
-  if (!loader) return;
+  const loaderCube = document.getElementById('loader-cube');
+  if (!loader || !loaderCube) return;
+
+  // Build scrambled cube in loader
+  buildCube(loaderCube, false);
+
+  // Solve it while loading
   setTimeout(() => {
-    loader.classList.add('hidden');
-  }, 2200);
+    animateSolve(loaderCube, () => {
+      // After solved, hide loader
+      setTimeout(() => {
+        loader.classList.add('hidden');
+      }, 400);
+    });
+  }, 600);
+}
+
+/* ── SUCCESS OVERLAY (cube loop: solved ↔ unsolved) ── */
+function initSuccessOverlay() {
+  const overlay = document.getElementById('form-success-overlay');
+  const cube    = document.getElementById('success-cube');
+  if (!overlay || !cube) return;
+
+  let loopActive = false;
+
+  window.showSuccessOverlay = function() {
+    // Clear and rebuild cube scrambled
+    cube.innerHTML = '';
+    buildCube(cube, false);
+    overlay.classList.add('show');
+    loopActive = true;
+
+    function loop() {
+      if (!loopActive) return;
+      animateSolve(cube, () => {
+        if (!loopActive) return;
+        setTimeout(() => {
+          animateUnsolve(cube, () => {
+            if (!loopActive) return;
+            setTimeout(loop, 600);
+          });
+        }, 800);
+      });
+    }
+    loop();
+
+    // Auto dismiss after 4s
+    setTimeout(() => {
+      loopActive = false;
+      overlay.classList.remove('show');
+    }, 4000);
+  };
 }
 
 /* ── SCROLL REVEAL ── */
@@ -113,16 +144,16 @@ function initScrollReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity    = '1';
-        entry.target.style.transform  = 'translateY(0)';
+        entry.target.style.opacity   = '1';
+        entry.target.style.transform = 'translateY(0)';
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
 
   targets.forEach((el, i) => {
-    el.style.opacity   = '0';
-    el.style.transform = 'translateY(28px)';
+    el.style.opacity    = '0';
+    el.style.transform  = 'translateY(28px)';
     el.style.transition = `opacity 0.5s ${i * 0.05}s ease, transform 0.5s ${i * 0.05}s ease`;
     observer.observe(el);
   });
@@ -141,7 +172,7 @@ function initSmoothScroll() {
   });
 }
 
-/* ── COUNTER ANIMATION ── */
+/* ── COUNTERS ── */
 function animateCounters() {
   document.querySelectorAll('.stat-num[data-target]').forEach(el => {
     const target   = parseFloat(el.dataset.target);
@@ -149,7 +180,6 @@ function animateCounters() {
     const duration = 1800;
     const start    = performance.now();
     const isInt    = Number.isInteger(target);
-
     function update(now) {
       const progress = Math.min((now - start) / duration, 1);
       const eased    = 1 - Math.pow(1 - progress, 3);
@@ -161,43 +191,35 @@ function animateCounters() {
   });
 }
 
-/* ── CONTACT FORM (Google Sheets Live Connection) ── */
+/* ── CONTACT FORM ── */
 function initForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
-  
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('.form-submit');
     const originalText = btn.textContent;
-    
-    btn.textContent = 'Sending Project Details…';
+    btn.textContent = 'Sending…';
     btn.disabled = true;
 
-    // paste your long Google Script Web App URL inside the quotes below:
-    const googleScriptUrl = https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec";
+    const googleScriptUrl = "https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec";
 
     try {
-      // Send data natively over to Google Sheets
-      const response = await fetch(googleScriptUrl, {
+      await fetch(googleScriptUrl, {
         method: 'POST',
-        mode: 'no-cors', // Bypasses cross-origin issues with Google Redirects safely
+        mode: 'no-cors',
         body: new FormData(form)
       });
-
-      // Show success states to the user
-      btn.textContent = '✓ Details Received Successfully!';
-      btn.style.background = '#00e87a'; // Change to green accent on success
-      btn.style.color = '#090b0e';
       form.reset();
-      
+      // Show cube success animation
+      if (window.showSuccessOverlay) window.showSuccessOverlay();
     } catch (error) {
       console.error('Submission Error:', error);
-      btn.textContent = '❌ Error. Please try again.';
-      btn.style.background = 'var(--red)';
-      btn.style.color = '#ffffff';
+      btn.textContent = '❌ Error. Try again.';
+      btn.style.background = '#e84444';
+      btn.style.color = '#fff';
     } finally {
-      // Reset button state after 4 seconds so they can submit again if needed
       setTimeout(() => {
         btn.textContent = originalText;
         btn.style.background = '';
@@ -216,52 +238,36 @@ function initNavOffset() {
   const h = banner.offsetHeight;
   nav.style.top = h + 'px';
   window.addEventListener('scroll', () => {
-    if (window.scrollY > h) {
-      nav.style.top = '0';
-    } else {
-      nav.style.top = (h - window.scrollY) + 'px';
-    }
+    nav.style.top = window.scrollY > h ? '0' : (h - window.scrollY) + 'px';
   });
 }
 
-/* ── THEME TOGGLE CONTROLLER (Light Mode Shift) ── */
+/* ── THEME TOGGLE ── */
 function initThemeToggle() {
-  const toggleBtn = document.getElementById('theme-toggle');
-  if (!toggleBtn) return;
+  const btn    = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const icon   = btn.querySelector('.toggle-icon');
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  if (icon) icon.textContent = current === 'light' ? '☀️' : '🌙';
 
-  const iconEl = toggleBtn.querySelector('.toggle-icon');
-  
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  if (iconEl) {
-    iconEl.textContent = currentTheme === 'light' ? '☀️' : '🌙';
-  }
-
-  toggleBtn.addEventListener('click', () => {
+  btn.addEventListener('click', () => {
     const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-    
     if (theme === 'dark') {
       document.documentElement.setAttribute('data-theme', 'light');
       localStorage.setItem('theme', 'light');
-      if (iconEl) iconEl.textContent = '☀️';
+      if (icon) icon.textContent = '☀️';
     } else {
       document.documentElement.removeAttribute('data-theme');
       localStorage.setItem('theme', 'dark');
-      if (iconEl) iconEl.textContent = '🌙';
+      if (icon) icon.textContent = '🌙';
     }
   });
 }
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
-  const cubeEl = document.getElementById('rubiks-cube');
-  if (cubeEl) buildCube(cubeEl);
-
-  const solveBtn = document.querySelector('.solve-btn');
-  if (solveBtn && cubeEl) {
-    solveBtn.addEventListener('click', () => solveCube(cubeEl));
-  }
-
   initLoader();
+  initSuccessOverlay();
   initSmoothScroll();
   initScrollReveal();
   initForm();
