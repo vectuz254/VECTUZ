@@ -175,7 +175,7 @@ function initForm() {
     btn.disabled = true;
 
     // paste your long Google Script Web App URL inside the quotes below:
-    const googleScriptUrl = https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec;
+    const googleScriptUrl = https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec";
 
     try {
       // Send data natively over to Google Sheets
