@@ -196,7 +196,6 @@ var PACKAGES = {
     ]
   }
 };
-
 /* ── PACKAGE MODAL ── */
 function initPackageModals() {
   var modal = document.getElementById('package-modal');
@@ -289,7 +288,6 @@ function initPackageModals() {
   // Backdrop click closes
   modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
 }
-
 /* ── SUCCESS OVERLAY ── */
 function initSuccessOverlay() {
   var overlay = document.getElementById('form-success-overlay');
