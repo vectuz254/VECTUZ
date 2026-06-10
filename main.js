@@ -78,7 +78,6 @@ function animateUnsolve(cube, onDone) {
   var total = 6 * 180 + 9 * 55 + 500;
   if (onDone) setTimeout(onDone, total);
 }
-
 /* ── SCATTER (offline disassemble effect) ── */
 function scatterCube(cube) {
   var cubies = cube.querySelectorAll('.cubie');
@@ -275,10 +274,16 @@ function initPackageModals() {
     document.body.style.overflow = '';
   }
 
-  // Learn more buttons
+  // Learn more buttons — mobile friendly
   document.querySelectorAll('.learn-more-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      openModal(btn.dataset.package);
+    ['click','touchend'].forEach(function(evt) {
+      btn.addEventListener(evt, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var key = btn.getAttribute('data-package');
+        console.log('Learn more clicked:', key);
+        openModal(key);
+      });
     });
   });
 
@@ -341,7 +346,6 @@ function initScrollReveal() {
     observer.observe(el);
   });
 }
-
 /* ── SMOOTH SCROLL ── */
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
@@ -436,7 +440,6 @@ function initThemeToggle() {
     }
   });
 }
-
 /* ── TERMS MODAL ── */
 function initTermsModal() {
   var openBtn = document.getElementById('open-terms');
@@ -481,4 +484,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.5 });
     obs.observe(statsBar);
   }
+});
+
+/* ── PRICING CARD CLICK (whole card opens modal on mobile) ── */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.pricing-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      if (e.target.classList.contains('learn-more-btn')) return;
+      var key = card.getAttribute('data-package');
+      if (key) {
+        var modal = document.getElementById('package-modal');
+        if (modal && !modal.classList.contains('show')) {
+          var btn = card.querySelector('.learn-more-btn');
+          if (btn) btn.click();
+        }
+      }
+    });
+  });
 });
