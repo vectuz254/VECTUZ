@@ -4,216 +4,382 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VECTUZ | Web Design Kenya</title>
-  <meta name="description" content="Custom websites, e-commerce & M-Pesa checkout built fast for Kenyan SMEs. Delivered in as little as 7 business days."/>
+  <meta name="description" content="Custom websites, e-commerce & M-Pesa checkout — built fast for Kenyan SMEs. Delivered in as little as 7 business days."/>
   <link rel="icon" href="logo.png" type="image/png"/>
-  <link href="https://fonts.googleapis.com/css?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <div id="loader">
-    <div class="loader-cube-wrap">
-      <div class="loader-cube-scene">
-        <div class="loader-cube" id="loader-cube"></div>
-      </div>
+<!-- ══════════════════════════════
+     LOADER — 3D Cube (replaces logo)
+══════════════════════════════ -->
+<div id="loader">
+  <div class="loader-cube-wrap">
+    <div class="loader-cube-scene">
+      <div class="loader-cube" id="loader-cube"></div>
     </div>
   </div>
+</div>
 
-  <div id="offline-overlay" class="offline-overlay">
-    <div class="offline-cube-scene">
-      <div class="offline-cube" id="offline-cube"></div>
+<!-- Form Success Overlay -->
+<div id="form-success-overlay" class="form-success-overlay">
+  <div class="success-cube-scene">
+    <div class="success-cube" id="success-cube"></div>
+  </div>
+  <div class="success-text">
+    <div class="success-icon">✓</div>
+    <h3>Message Sent!</h3>
+    <p>We'll get back to you within a few hours.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     DISCOUNT BANNER
+══════════════════════════════ -->
+<div class="discount-banner">
+  🚀 Launch Offer — 20% OFF all packages this month <span>|</span> Fast delivery guaranteed
+</div>
+
+<!-- ══════════════════════════════
+     NAV
+══════════════════════════════ -->
+<nav>
+  <a href="#home" class="logo">
+    <img src="logo.png" alt="VECTUZ"/>
+    <span class="logo-text">VECT<span>UZ</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+    <li>
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-grid" aria-hidden="true">
+    <div class="hero-grid-inner">
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
     </div>
-    <div class="offline-text">
-      <h3>Your device is offline</h3>
-      <p>Please check your internet connection.</p>
-    </div>
+    <div class="hero-glow"></div>
   </div>
 
-  <div id="form-success-overlay" class="form-success-overlay">
-    <div class="success-cube-scene">
-      <div class="success-cube" id="success-cube"></div>
+  <div class="hero-tag">Web Design Kenya</div>
+  <h1>Your Business.<br/><em>Digital</em><br/><span class="accent">Reality.</span></h1>
+  <p class="hero-sub">Custom websites, e-commerce &amp; secure checkout — built fast for Kenyan SMEs that mean business.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Start Your Project →</a>
+    <a href="#services" class="btn-outline">See Services</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     STATS BAR
+══════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num" data-target="7" data-suffix="d">7d</div>
+    <div class="stat-label">Fastest Delivery</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-target="20" data-suffix="%">20%</div>
+    <div class="stat-label">Launch Discount</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-target="100" data-suffix="%">100%</div>
+    <div class="stat-label">Custom Design</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">🇰🇪</div>
+    <div class="stat-label">Based in Kenya</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SERVICES
+══════════════════════════════ -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-tag">What We Build</div>
+      <h2 class="section-title">Services Built for<br/><em>Kenyan Business</em></h2>
     </div>
-    <div class="success-text">
-      <div class="success-icon"></div>
-      <h3>Message Sent!</h3>
-      <p>We'll get back to you within a few hours.</p>
+    <p class="services-intro">Everything your SME needs to show up online — professionally, fast, and affordably.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🖥️</span>
+      <div class="service-title">Custom Web Design</div>
+      <p class="service-desc">Handcrafted websites that reflect your brand identity. No templates — every pixel tailored to your business.</p>
+      <div class="service-price">Starting from KES 24,599</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🛒</span>
+      <div class="service-title">E-Commerce Stores</div>
+      <p class="service-desc">Sell online with product catalogues, inventory management, and a smooth buying experience for your customers.</p>
+      <div class="service-price">Starting from KES 74,999</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🔒</span>
+      <div class="service-title">Secure Checkout</div>
+      <p class="service-desc">M-Pesa, card, and mobile money integrations. Your customers pay safely — you get paid on time.</p>
+      <div class="service-price">Included with E-Commerce</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📱</span>
+      <div class="service-title">Mobile-First Design</div>
+      <p class="service-desc">Built for Kenyan users on mobile. Fast loading, touch-friendly, and beautiful on any screen size.</p>
+      <div class="service-price">Included in all packages</div>
     </div>
   </div>
+</section>
 
-  <div class="discount-banner">
-    Launch Offer - 20% OFF all packages this month <span>|</span> Fast delivery guaranteed
-  </div>
-
-  <nav>
-    <a href="#home" class="logo">
-      <img src="logo.png" alt="VECTUZ"/>
-      <span class="logo-text">VECT<span>UZ</span></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#why">Why Us</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#contact" class="nav-cta">Get Started</a></li>
-      <li>
-        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
-          <span class="toggle-icon"></span>
-        </button>
-      </li>
-    </ul>
-  </nav>
-
-  <section class="hero" id="home">
-    <div class="hero-grid" aria-hidden="true">
-      <div class="hero-grid-inner">
-        <div></div><div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div><div></div>
-      </div>
-      <div class="hero-glow"></div>
-    </div>
-    <div class="hero-tag">Web Design Kenya</div>
-    <h1>Your Business.<br/><em>Digital</em><br/><span class="accent">Reality.</span></h1>
-    <p class="hero-sub">Custom websites, e-commerce &amp; secure checkout built fast for Kenyan SMEs that mean business.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Start Your Project →</a>
-      <a href="#services" class="btn-outline">See Services</a>
-    </div>
-  </section>
-
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-num" data-target="7" data-suffix="d">7d</div><div class="stat-label">Fastest Delivery</div></div>
-    <div class="stat"><div class="stat-num" data-target="20" data-suffix="%">20%</div><div class="stat-label">Launch Discount</div></div>
-    <div class="stat"><div class="stat-num" data-target="100" data-suffix="%">100%</div><div class="stat-label">Custom Design</div></div>
-    <div class="stat"><div class="stat-num">Based in Kenya</div></div>
-  </div>
-
-  <section class="services" id="services">
-    <div class="services-header">
-      <div>
-        <div class="section-tag">What We Build</div>
-        <h2 class="section-title">Services Built for<br/><em>Kenyan Business</em></h2>
-      </div>
-      <p class="services-intro">Everything your SME needs to show up online professionally, fast, and affordably.</p>
-    </div>
-    <div class="services-grid">
-      <div class="service-card">
-        <span class="service-icon"></span>
-        <div class="service-title">Custom Web Design</div>
-        <p class="service-desc">Handcrafted websites that reflect your brand identity. No templates — every pixel tailored to your business.</p>
-        <div class="service-price">Starting from KES 24,599</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon"></span>
-        <div class="service-title">E-Commerce Stores</div>
-        <p class="service-desc">Sell online with product catalogues, inventory management, and a smooth buying experience for your customers.</p>
-        <div class="service-price">Starting from KES 74,999</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon"></span>
-        <div class="service-title">Secure Checkout</div>
-        <p class="service-desc">M-Pesa, card, and mobile money integrations. Your customers pay safely, you get paid on time.</p>
-        <div class="service-price">Included with E-Commerce</div>
-      </div>
-      <div class="service-card">
-        <span class="service-icon"></span>
-        <div class="service-title">Mobile-First Design</div>
-        <p class="service-desc">Built for Kenyan users on mobile. Fast loading, touch-friendly, and beautiful on any screen size.</p>
-        <div class="service-price">Included in all packages</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pricing" id="pricing">
-    <div class="section-tag">Transparent Pricing</div>
-    <h2 class="section-title">Simple Packages for<br/><em>Every Budget</em></h2>
-    <div class="pricing-grid">
-      <div class="pricing-card tier-starter">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>KES </sup>24,599</div>
-        <p class="plan-desc">Perfect for businesses that need a clean, professional online presence.</p>
-        <button class="plan-cta learn-more-trigger" data-package="starter">Learn More</button>
-      </div>
-      <div class="pricing-card tier-business">
-        <div class="plan-name">Business</div>
-        <div class="plan-price"><sup>KES </sup>74,999</div>
-        <p class="plan-desc">Full-featured website with e-commerce and payment integrations.</p>
-        <button class="plan-cta learn-more-trigger" data-package="business">Learn More</button>
-      </div>
-    </div>
-  </section>
-
-  <div id="package-modal" class="package-modal">
-    <div class="modal-content-wrapper">
-      <button class="modal-close-btn">&times;</button>
-      <div class="modal-cube-section">
-        <div class="modal-cube-scene">
-          <div id="modal-solving-cube" class="modal-solving-cube"></div>
+<!-- ══════════════════════════════
+     WHY VECTUZ
+══════════════════════════════ -->
+<section class="why" id="why">
+  <div class="section-tag">Why VECTUZ</div>
+  <div class="why-grid">
+    <div class="why-text">
+      <h2 class="section-title">We Turn Ideas Into<br/><em>Digital Reality</em></h2>
+      <p>Most agencies take weeks and charge a premium. We move at startup speed without cutting corners — because your business can't wait.</p>
+      <div class="why-points">
+        <div class="why-point">
+          <div class="why-point-icon">⚡</div>
+          <div class="why-point-text">
+            <strong>Speed That Impresses</strong>
+            <span>We've delivered full websites in 7 business days. Fast delivery is our standard, not the exception.</span>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-icon">🇰🇪</div>
+          <div class="why-point-text">
+            <strong>Kenya-Focused</strong>
+            <span>We understand local business needs — M-Pesa integration, Kenyan SME pricing, and your market.</span>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-icon">🎯</div>
+          <div class="why-point-text">
+            <strong>No Cookie-Cutter Sites</strong>
+            <span>Every site is unique. We design from scratch to make your business stand out online.</span>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="why-point-icon">💬</div>
+          <div class="why-point-text">
+            <strong>Ongoing Support</strong>
+            <span>We don't disappear after launch. Maintenance, updates, and changes — we're a message away.</span>
+          </div>
         </div>
       </div>
-      <div id="modal-details-target" class="modal-details-target"></div>
+    </div>
+    <div class="why-visual">
+      <div>
+        <span class="why-big-number">7</span>
+        <div class="why-big-label">Business days to live</div>
+      </div>
+      <div class="why-badge">⚡ FASTEST DELIVERY</div>
     </div>
   </div>
+</section>
 
-  <section id="contact">
-    <form id="project-form">
+<!-- ══════════════════════════════
+     PROCESS
+══════════════════════════════ -->
+<section class="process" id="process">
+  <div class="section-tag">How It Works</div>
+  <h2 class="section-title">From Idea to<br/><em>Live Website</em></h2>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-step-title">Discovery Call</div>
+      <p class="process-step-desc">We learn your business, goals, and what you need the website to do for you.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-step-title">Design &amp; Build</div>
+      <p class="process-step-desc">We design and develop your site — fast. You'll see progress within 48 hours.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-step-title">Review &amp; Revise</div>
+      <p class="process-step-desc">You review, request changes, and we refine until every detail is right.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <div class="process-step-title">Launch 🚀</div>
+      <p class="process-step-desc">Your site goes live on your domain. We handle the technical handover.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     PRICING
+══════════════════════════════ -->
+<section class="pricing" id="pricing">
+  <div class="section-tag">Transparent Pricing</div>
+  <h2 class="section-title">Simple Packages for<br/><em>Every Budget</em></h2>
+  <div class="pricing-grid">
+
+    <!-- STARTER — cool blue/teal -->
+    <div class="pricing-card tier-starter">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><sup>KES </sup>24,599</div>
+      <p class="plan-desc">Perfect for businesses that need a clean, professional online presence.</p>
+      <ul class="plan-features">
+        <li>Up to 2 pages</li>
+        <li>Mobile-responsive design</li>
+        <li>Contact form</li>
+        <li>Social media links</li>
+        <li>Google Maps integration</li>
+        <li>5-day delivery</li>
+      </ul>
+      <a href="#contact" class="plan-cta">Get Started</a>
+    </div>
+
+    <!-- BUSINESS — electric green -->
+    <div class="pricing-card tier-business">
+      <div class="plan-name">Business</div>
+      <div class="plan-price"><sup>KES </sup>74,999</div>
+      <p class="plan-desc">Full-featured website with e-commerce and payment integrations.</p>
+      <ul class="plan-features">
+        <li>Up to 15 pages</li>
+        <li>E-commerce / online store</li>
+        <li>M-Pesa &amp; card checkout</li>
+        <li>Custom animations</li>
+        <li>WhatsApp chat button</li>
+        <li>7 business days delivery</li>
+        <li>1 month free support</li>
+      </ul>
+      <a href="#contact" class="plan-cta">Get Started</a>
+    </div>
+
+    <!-- PREMIUM — gold/amber -->
+    <div class="pricing-card tier-premium">
+      <div class="plan-name">Premium</div>
+      <div class="plan-price"><sup>KES </sup>120,000</div>
+      <p class="plan-desc">Enterprise-level builds with full custom functionality and integrations.</p>
+      <ul class="plan-features">
+        <li>Unlimited pages</li>
+        <li>Full custom design system</li>
+        <li>Booking / inventory systems</li>
+        <li>Admin dashboard</li>
+        <li>API integrations</li>
+        <li>3 months support</li>
+        <li>Priority delivery</li>
+      </ul>
+      <a href="#contact" class="plan-cta">Talk to Us</a>
+    </div>
+
+    <!-- MAX — deep red/fire -->
+    <div class="pricing-card tier-max">
+      <div class="plan-name">MAX</div>
+      <div class="plan-price"><sup>KES </sup>200k–300k</div>
+      <p class="plan-desc">Full digital transformation — a complete business system built to scale.</p>
+      <ul class="plan-features">
+        <li>Custom web application</li>
+        <li>Android + iOS mobile app</li>
+        <li>M-Pesa Daraja API integration</li>
+        <li>Custom admin dashboard</li>
+        <li>Inventory &amp; CRM system</li>
+        <li>WhatsApp Business API</li>
+        <li>Full brand identity design</li>
+        <li>Staff login &amp; roles system</li>
+        <li>Automated SMS &amp; email marketing</li>
+        <li>SEO &amp; Google ranking setup</li>
+        <li>Google Business Profile setup</li>
+        <li>Analytics &amp; reporting dashboard</li>
+        <li>Staff training included</li>
+        <li>6 months dedicated support</li>
+        <li>Priority 24h delivery</li>
+      </ul>
+      <a href="#contact" class="plan-cta">Talk to Us</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     CONTACT
+══════════════════════════════ -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="section-tag">Let's Work Together</div>
+    <h2 class="section-title">Start Your Project<br/><em>Today</em></h2>
+    <p>Tell us about your business and we'll get back to you within a few hours.</p>
+    <form class="contact-form" id="contact-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Your Name</label>
+          <input id="name" name="name" type="text" placeholder="Jane Wanjiru" required/>
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone / WhatsApp</label>
+          <input id="phone" name="phone" type="tel" placeholder="+254 7XX XXX XXX" required/>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="business">Business Name</label>
+        <input id="business" name="business" type="text" placeholder="My Business Ltd"/>
+      </div>
       <div class="form-field">
         <label for="package">Service Needed</label>
         <select id="package" name="package">
           <option value="">Select a package</option>
-          <option>Starter - KES 24,599</option>
-          <option>Business - KES 74,999</option>
+          <option>Starter — KES 24,599</option>
+          <option>Business — KES 74,999</option>
+          <option>Premium — KES 120,000</option>
+          <option>MAX — KES 200k–300k</option>
+          <option>Not sure yet</option>
         </select>
+      </div>
+      <div class="form-field">
+        <label for="message">Tell us about your project</label>
+        <textarea id="message" name="message" rows="4" placeholder="Briefly describe your business and what you need…"></textarea>
       </div>
       <button type="submit" class="form-submit">Send Message →</button>
     </form>
-  </section>
-
-  <section class="legal-framework-section">
-    <div class="legal-container">
-      <div class="policy-node">
-        DATA POLICY: "WE DO NOT SELL YOUR DATA TO THIRD PARTY PERIOD!"
-      </div>
-      <div class="terms-grid">
-        <div class="terms-block">
-          <h4>Terms & Conditions (Mutual Benefit)</h4>
-          <p>By engaging VECTUZ for deployment initiatives, clients receive full operational ownership profiles post financial handovers. Project delivery timelines assume prompt collaborative feedback cycles within target milestone parameters to protect engineering structural integrity.</p>
-        </div>
-        <div class="terms-block">
-          <h4>Payment & Milestone Protocol</h4>
-          <p>Operational design phases commence explicitly following standard verified commitments. Final balance parameters remain due strictly upon successful review approval and prior to live domain propagation transitions.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="payment-ticker-container">
-    <div class="ticker-wrap">
-      <div class="ticker-track">
-        <span class="ticker-item">M-PESA</span>
-        <span class="ticker-item">AIRTEL MONEY</span>
-        <span class="ticker-item">EQUITY BANK</span>
-        <span class="ticker-item">KCB BANK</span>
-        <span class="ticker-item">DTB BANK</span>
-        <span class="ticker-item">STANDARD CHARTERED</span>
-        <span class="ticker-item">M-PESA</span>
-        <span class="ticker-item">AIRTEL MONEY</span>
-        <span class="ticker-item">EQUITY BANK</span>
-        <span class="ticker-item">KCB BANK</span>
-        <span class="ticker-item">DTB BANK</span>
-        <span class="ticker-item">STANDARD CHARTERED</span>
-      </div>
-    </div>
+    <p class="whatsapp-alt">
+      Prefer to chat? <a href="https://wa.me/254783944907" target="_blank" rel="noopener">Message us on WhatsApp →</a>
+    </p>
   </div>
+</section>
 
-  <a href="mailto:vectuz9@gmail.com" class="email-float-toggle" aria-label="Reach out directly to email">
-    <span class="email-icon">✉</span>
-    <span class="email-tooltip">vectuz9@gmail.com</span>
-  </a>
-
-  <footer>
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer>
+  <div>
     <div class="footer-brand">VECT<span>UZ</span></div>
-    <div class="footer-tagline">Turning business ideas into digital reality - Nairobi, Kenya</div>
-  </footer>
+    <div class="footer-tagline">Turning business ideas into digital reality — Nairobi, Kenya</div>
+  </div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+    <a href="https://www.instagram.com/vectuz_" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <p class="footer-copy">© 2026 VECTUZ. All rights reserved.</p>
+</footer>
 
+<script src="main.js"></script>
 </body>
 </html>
+
