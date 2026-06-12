@@ -47,8 +47,11 @@
   <div class="modal-backdrop"></div>
   <div class="modal-content">
     <button class="modal-close" id="modal-close">✕</button>
-    <div class="modal-cube-scene">
+    <div class="modal-cube-scene" id="modal-cube-scene">
       <div class="modal-cube" id="modal-cube"></div>
+      <div class="energy-wave" id="ewave1"></div>
+      <div class="energy-wave delay1" id="ewave2"></div>
+      <div class="energy-wave delay2" id="ewave3"></div>
     </div>
     <div class="modal-body" id="modal-body">
       <!-- filled by JS -->
@@ -202,12 +205,29 @@
         </div>
       </div>
     </div>
-    <div class="why-visual">
-      <div>
-        <span class="why-big-number">7</span>
-        <div class="why-big-label">Business days to live</div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════ PORTFOLIO ══════════════════════════════ -->
+<section class="portfolio" id="portfolio">
+  <div class="section-tag">Our Work</div>
+  <h2 class="section-title">See It On<br/><em>Real Devices</em></h2>
+  <p class="portfolio-intro">A look at how our designs feel on mobile — fast, clean, and built to convert.</p>
+
+  <div class="portfolio-layout">
+    <div class="portfolio-phone-mockup">
+      <div class="portfolio-phone-screen">
+        <video autoplay loop muted playsinline poster="">
+          <source src="portfolio-demo.mp4" type="video/mp4">
+        </video>
       </div>
-      <div class="why-badge">⚡ FASTEST DELIVERY</div>
+    </div>
+
+    <div class="portfolio-carousel">
+      <div class="portfolio-track" id="portfolio-track">
+        <!-- slides injected by JS, duplicated for seamless loop -->
+      </div>
     </div>
   </div>
 </section>
