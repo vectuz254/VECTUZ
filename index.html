@@ -361,20 +361,8 @@
 <div class="payment-ticker-wrap">
   <div class="payment-ticker-label">We Accept</div>
   <div class="payment-ticker">
-    <div class="ticker-track">
-      <span class="ticker-item mpesa">📱 M-Pesa</span>
-      <span class="ticker-item airtel">📱 Airtel Money</span>
-      <span class="ticker-item kcb">🏦 KCB Bank</span>
-      <span class="ticker-item equity">🏦 Equity Bank</span>
-      <span class="ticker-item dtb">🏦 DTB Bank</span>
-      <span class="ticker-item sc">🏦 Standard Chartered</span>
-      <!-- duplicate for seamless loop -->
-      <span class="ticker-item mpesa">📱 M-Pesa</span>
-      <span class="ticker-item airtel">📱 Airtel Money</span>
-      <span class="ticker-item kcb">🏦 KCB Bank</span>
-      <span class="ticker-item equity">🏦 Equity Bank</span>
-      <span class="ticker-item dtb">🏦 DTB Bank</span>
-      <span class="ticker-item sc">🏦 Standard Chartered</span>
+    <div class="ticker-track" id="ticker-track">
+      <!-- built by JS with logos + cube hover -->
     </div>
   </div>
 </div>
@@ -437,6 +425,9 @@
   </div>
 </div>
 
+<script src="bank-logos-1.js"></script>
+<script src="bank-logos-2.js"></script>
+<script src="payment-methods.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
