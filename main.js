@@ -8,6 +8,7 @@
   if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
 })();
 
+
 /* ── CUBE COLOURS ── */
 const SCRAMBLED = {
   front:  ['#e84444','#f5c842','#3a8fe8','#00c853','#f0ece4','#e87a00','#3a8fe8','#e84444','#f5c842'],
@@ -61,7 +62,6 @@ function animateSolve(cube, onDone) {
   var total = 6 * 180 + 9 * 55 + 500;
   if (onDone) setTimeout(onDone, total);
 }
-
 /* ── ANIMATE: solved → scrambled ── */
 function animateUnsolve(cube, onDone) {
   var faces = cube.querySelectorAll('.cube-face');
@@ -78,6 +78,7 @@ function animateUnsolve(cube, onDone) {
   var total = 6 * 180 + 9 * 55 + 500;
   if (onDone) setTimeout(onDone, total);
 }
+
 /* ── SCATTER (offline disassemble effect) ── */
 function scatterCube(cube) {
   var cubies = cube.querySelectorAll('.cubie');
@@ -92,6 +93,92 @@ function scatterCube(cube) {
   });
 }
 
+
+/* ── PAYMENT TICKER WITH LOGOS ── */
+function initPaymentTicker() {
+  var track = document.getElementById('ticker-track');
+  if (!track) return;
+
+  function makeItem(method) {
+    var a = document.createElement('a');
+    a.href = method.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.className = 'ticker-item ticker-logo-item';
+    a.title = method.name;
+
+    // Cube scene (shows on hover)
+    var cubeWrap = document.createElement('div');
+    cubeWrap.className = 'ticker-cube-wrap';
+    var scene = document.createElement('div');
+    scene.className = 'ticker-cube-scene';
+    var cube = document.createElement('div');
+    cube.className = 'ticker-mini-cube';
+    buildCube(cube, false);
+    scene.appendChild(cube);
+    cubeWrap.appendChild(scene);
+    a.appendChild(cubeWrap);
+
+    // Logo or emoji
+    var logoWrap = document.createElement('div');
+    logoWrap.className = 'ticker-logo-wrap';
+
+    if (method.logo && BANK_LOGOS[method.logo]) {
+      var img = document.createElement('img');
+      img.src = BANK_LOGOS[method.logo];
+      img.alt = method.name;
+      img.className = 'ticker-bank-img';
+      logoWrap.appendChild(img);
+    } else {
+      var emoji = document.createElement('span');
+      emoji.className = 'ticker-emoji';
+      emoji.textContent = method.emoji;
+      var txt = document.createElement('span');
+      txt.className = 'ticker-name';
+      txt.textContent = method.name;
+      logoWrap.appendChild(emoji);
+      logoWrap.appendChild(txt);
+    }
+
+    a.appendChild(logoWrap);
+
+    // Hover: show cube, hide logo
+    a.addEventListener('mouseenter', function() {
+      logoWrap.style.opacity = '0';
+      logoWrap.style.transform = 'scale(0.8)';
+      cubeWrap.style.opacity = '1';
+      cubeWrap.style.transform = 'scale(1)';
+      cube.style.animation = 'miniCubeSpin 1s linear infinite';
+    });
+    a.addEventListener('mouseleave', function() {
+      logoWrap.style.opacity = '1';
+      logoWrap.style.transform = 'scale(1)';
+      cubeWrap.style.opacity = '0';
+      cubeWrap.style.transform = 'scale(0.8)';
+      cube.style.animation = '';
+    });
+
+    // Touch support
+    a.addEventListener('touchstart', function() {
+      logoWrap.style.opacity = '0';
+      cubeWrap.style.opacity = '1';
+      cube.style.animation = 'miniCubeSpin 1s linear infinite';
+    }, {passive:true});
+    a.addEventListener('touchend', function() {
+      setTimeout(function() {
+        logoWrap.style.opacity = '1';
+        cubeWrap.style.opacity = '0';
+        cube.style.animation = '';
+      }, 600);
+    });
+
+    return a;
+  }
+
+  // Build track with duplicates for seamless loop
+  PAYMENT_METHODS.forEach(function(m) { track.appendChild(makeItem(m)); });
+  PAYMENT_METHODS.forEach(function(m) { track.appendChild(makeItem(m)); });
+}
 /* ── LOADER ── */
 function initLoader() {
   var loader = document.getElementById('loader');
@@ -195,6 +282,7 @@ var PACKAGES = {
     ]
   }
 };
+
 /* ── PACKAGE MODAL ── */
 function initPackageModals() {
   var modal = document.getElementById('package-modal');
@@ -273,26 +361,6 @@ function initPackageModals() {
     modal.classList.remove('show');
     document.body.style.overflow = '';
   }
-
-  // Learn more buttons — mobile friendly
-  document.querySelectorAll('.learn-more-btn').forEach(function(btn) {
-    ['click','touchend'].forEach(function(evt) {
-      btn.addEventListener(evt, function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var key = btn.getAttribute('data-package');
-        console.log('Learn more clicked:', key);
-        openModal(key);
-      });
-    });
-  });
-
-  // Close button
-  closeBtn.addEventListener('click', closeModal);
-
-  // Backdrop click closes
-  modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
-}
 /* ── SUCCESS OVERLAY ── */
 function initSuccessOverlay() {
   var overlay = document.getElementById('form-success-overlay');
@@ -346,6 +414,7 @@ function initScrollReveal() {
     observer.observe(el);
   });
 }
+
 /* ── SMOOTH SCROLL ── */
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
@@ -358,7 +427,6 @@ function initSmoothScroll() {
     });
   });
 }
-
 /* ── COUNTERS ── */
 function animateCounters() {
   document.querySelectorAll('.stat-num[data-target]').forEach(function(el) {
@@ -467,6 +535,7 @@ function initTermsModal() {
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', function() {
   initLoader();
+  initPaymentTicker();
   initOffline();
   initSuccessOverlay();
   initPackageModals();
@@ -502,3 +571,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+  // Learn more buttons — mobile friendly
+  document.querySelectorAll('.learn-more-btn').forEach(function(btn) {
+    ['click','touchend'].forEach(function(evt) {
+      btn.addEventListener(evt, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var key = btn.getAttribute('data-package');
+        console.log('Learn more clicked:', key);
+        openModal(key);
+      });
+    });
+  });
+
+  // Close button
+  closeBtn.addEventListener('click', closeModal);
+
+  // Backdrop click closes
+  modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+}
