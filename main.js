@@ -1,16 +1,16 @@
 /* ═══════════════════════════════════════════
-   VECTUZ — main.js
+   VECTUZ — main.js  (FIXED)
    ═══════════════════════════════════════════ */
 
 /* ── THEME GUARD ── */
 (function() {
-  const saved = localStorage.getItem('theme') || 'dark';
+  var saved = localStorage.getItem('theme') || 'dark';
   if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
 })();
 
 
 /* ── CUBE COLOURS ── */
-const SCRAMBLED = {
+var SCRAMBLED = {
   front:  ['#e84444','#f5c842','#3a8fe8','#00c853','#f0ece4','#e87a00','#3a8fe8','#e84444','#f5c842'],
   back:   ['#f5c842','#e84444','#f0ece4','#e87a00','#3a8fe8','#00c853','#e87a00','#f5c842','#e84444'],
   right:  ['#3a8fe8','#00c853','#e84444','#f5c842','#e87a00','#e84444','#f0ece4','#3a8fe8','#00c853'],
@@ -18,7 +18,7 @@ const SCRAMBLED = {
   top:    ['#f5c842','#3a8fe8','#e87a00','#e84444','#f0ece4','#3a8fe8','#00c853','#e84444','#f5c842'],
   bottom: ['#f0ece4','#00c853','#3a8fe8','#f5c842','#e84444','#e87a00','#3a8fe8','#f0ece4','#00c853'],
 };
-const SOLVED = {
+var SOLVED = {
   front:  Array(9).fill('#e84444'),
   back:   Array(9).fill('#e87a00'),
   right:  Array(9).fill('#3a8fe8'),
@@ -30,8 +30,8 @@ const SOLVED = {
 /* ── BUILD CUBE ── */
 function buildCube(container, startSolved) {
   container.innerHTML = '';
-  const faces = ['front','back','right','left','top','bottom'];
-  const colours = startSolved ? SOLVED : SCRAMBLED;
+  var faces = ['front','back','right','left','top','bottom'];
+  var colours = startSolved ? SOLVED : SCRAMBLED;
   faces.forEach(function(faceName) {
     var face = document.createElement('div');
     face.className = 'cube-face ' + faceName;
@@ -62,6 +62,7 @@ function animateSolve(cube, onDone) {
   var total = 6 * 180 + 9 * 55 + 500;
   if (onDone) setTimeout(onDone, total);
 }
+
 /* ── ANIMATE: solved → scrambled ── */
 function animateUnsolve(cube, onDone) {
   var faces = cube.querySelectorAll('.cube-face');
@@ -93,7 +94,6 @@ function scatterCube(cube) {
   });
 }
 
-
 /* ── PAYMENT TICKER WITH LOGOS ── */
 function initPaymentTicker() {
   var track = document.getElementById('ticker-track');
@@ -107,7 +107,6 @@ function initPaymentTicker() {
     a.className = 'ticker-item ticker-logo-item';
     a.title = method.name;
 
-    // Cube scene (shows on hover)
     var cubeWrap = document.createElement('div');
     cubeWrap.className = 'ticker-cube-wrap';
     var scene = document.createElement('div');
@@ -119,11 +118,10 @@ function initPaymentTicker() {
     cubeWrap.appendChild(scene);
     a.appendChild(cubeWrap);
 
-    // Logo or emoji
     var logoWrap = document.createElement('div');
     logoWrap.className = 'ticker-logo-wrap';
 
-    if (method.logo && BANK_LOGOS[method.logo]) {
+    if (method.logo && typeof BANK_LOGOS !== 'undefined' && BANK_LOGOS[method.logo]) {
       var img = document.createElement('img');
       img.src = BANK_LOGOS[method.logo];
       img.alt = method.name;
@@ -132,7 +130,7 @@ function initPaymentTicker() {
     } else {
       var emoji = document.createElement('span');
       emoji.className = 'ticker-emoji';
-      emoji.textContent = method.emoji;
+      emoji.textContent = method.emoji || '';
       var txt = document.createElement('span');
       txt.className = 'ticker-name';
       txt.textContent = method.name;
@@ -142,7 +140,6 @@ function initPaymentTicker() {
 
     a.appendChild(logoWrap);
 
-    // Hover: show cube, hide logo
     a.addEventListener('mouseenter', function() {
       logoWrap.style.opacity = '0';
       logoWrap.style.transform = 'scale(0.8)';
@@ -158,12 +155,11 @@ function initPaymentTicker() {
       cube.style.animation = '';
     });
 
-    // Touch support
     a.addEventListener('touchstart', function() {
       logoWrap.style.opacity = '0';
       cubeWrap.style.opacity = '1';
       cube.style.animation = 'miniCubeSpin 1s linear infinite';
-    }, {passive:true});
+    }, {passive: true});
     a.addEventListener('touchend', function() {
       setTimeout(function() {
         logoWrap.style.opacity = '1';
@@ -175,10 +171,12 @@ function initPaymentTicker() {
     return a;
   }
 
-  // Build track with duplicates for seamless loop
-  PAYMENT_METHODS.forEach(function(m) { track.appendChild(makeItem(m)); });
-  PAYMENT_METHODS.forEach(function(m) { track.appendChild(makeItem(m)); });
+  if (typeof PAYMENT_METHODS !== 'undefined') {
+    PAYMENT_METHODS.forEach(function(m) { track.appendChild(makeItem(m)); });
+    PAYMENT_METHODS.forEach(function(m) { track.appendChild(makeItem(m)); });
+  }
 }
+
 /* ── LOADER ── */
 function initLoader() {
   var loader = document.getElementById('loader');
@@ -214,7 +212,6 @@ function initOffline() {
   window.addEventListener('offline', showOffline);
   window.addEventListener('online', hideOffline);
 }
-
 /* ── PACKAGE DATA ── */
 var PACKAGES = {
   starter: {
@@ -297,20 +294,17 @@ function initPackageModals() {
     var pkg = PACKAGES[packageKey];
     if (!pkg) return;
 
-    // Build modal body
     var featuresHTML = pkg.features.map(function(f) {
       return '<div class="modal-feature"><div class="modal-feature-title" style="color:' + pkg.color + '">✓ ' + f.title + '</div><div class="modal-feature-desc">' + f.desc + '</div></div>';
     }).join('');
 
     modalBody.innerHTML = '<div class="modal-header"><div class="modal-plan-name" style="color:' + pkg.color + '">' + pkg.name + '</div><div class="modal-plan-price">' + pkg.price + '</div><p class="modal-tagline">' + pkg.tagline + '</p></div><div class="modal-features-grid">' + featuresHTML + '</div><a href="#contact" class="modal-cta" style="background:' + pkg.color + '" id="modal-cta-btn">Get Started →</a>';
 
-    // Build and animate cube
     buildCube(modalCube, false);
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
     loopActive = true;
 
-    // Scatter first, then solve loop
     setTimeout(function() { scatterCubeModal(modalCube); }, 300);
     setTimeout(function() {
       buildCube(modalCube, false);
@@ -330,7 +324,6 @@ function initPackageModals() {
       });
     }
 
-    // CTA closes modal and scrolls to contact
     setTimeout(function() {
       var ctaBtn = document.getElementById('modal-cta-btn');
       if (ctaBtn) {
@@ -346,7 +339,7 @@ function initPackageModals() {
 
   function scatterCubeModal(cube) {
     var faces = cube.querySelectorAll('.cube-face');
-    faces.forEach(function(face, fi) {
+    faces.forEach(function(face) {
       var rx = (Math.random() - 0.5) * 300;
       var ry = (Math.random() - 0.5) * 300;
       var rot = Math.random() * 540;
@@ -361,6 +354,40 @@ function initPackageModals() {
     modal.classList.remove('show');
     document.body.style.overflow = '';
   }
+
+  /* ── CLOSE BUTTON ── */
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+
+  /* ── BACKDROP CLICK ── */
+  var backdrop = modal.querySelector('.modal-backdrop');
+  if (backdrop) {
+    backdrop.addEventListener('click', closeModal);
+  }
+
+  /* ── ESC KEY ── */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* ── LEARN MORE BUTTONS ── */
+  document.querySelectorAll('.learn-more-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openModal(btn.dataset.package);
+    });
+  });
+
+  /* ── CARD CLICK ── */
+  document.querySelectorAll('.pricing-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      openModal(card.dataset.package);
+    });
+  });
+} /* ← END initPackageModals */
+
+
 /* ── SUCCESS OVERLAY ── */
 function initSuccessOverlay() {
   var overlay = document.getElementById('form-success-overlay');
@@ -419,7 +446,9 @@ function initScrollReveal() {
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     a.addEventListener('click', function(e) {
-      var target = document.querySelector(a.getAttribute('href'));
+      var href = a.getAttribute('href');
+      if (href === '#terms') return; // handled separately
+      var target = document.querySelector(href);
       if (target) {
         e.preventDefault();
         window.scrollTo({ top: target.offsetTop - 90, behavior: 'smooth' });
@@ -427,6 +456,7 @@ function initSmoothScroll() {
     });
   });
 }
+
 /* ── COUNTERS ── */
 function animateCounters() {
   document.querySelectorAll('.stat-num[data-target]').forEach(function(el) {
@@ -445,7 +475,6 @@ function animateCounters() {
     requestAnimationFrame(update);
   });
 }
-
 /* ── CONTACT FORM ── */
 function initForm() {
   var form = document.getElementById('contact-form');
@@ -495,98 +524,64 @@ function initThemeToggle() {
   var icon = btn.querySelector('.toggle-icon');
   var current = document.documentElement.getAttribute('data-theme') || 'dark';
   if (icon) icon.textContent = current === 'light' ? '☀️' : '🌙';
+
   btn.addEventListener('click', function() {
-    var theme = document.documentElement.getAttribute('data-theme') || 'dark';
-    if (theme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
-      if (icon) icon.textContent = '☀️';
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'dark');
-      if (icon) icon.textContent = '🌙';
-    }
+    current = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', current);
+    localStorage.setItem('theme', current);
+    if (icon) icon.textContent = current === 'light' ? '☀️' : '🌙';
   });
 }
+
 /* ── TERMS MODAL ── */
 function initTermsModal() {
   var openBtn = document.getElementById('open-terms');
   var modal = document.getElementById('terms-modal');
   var closeBtn = document.getElementById('terms-close');
   var ctaBtn = document.getElementById('terms-cta-btn');
-  if (!openBtn || !modal) return;
+  if (!modal) return;
 
-  openBtn.addEventListener('click', function(e) {
-    e.preventDefault();
+  function openTerms(e) {
+    if (e) e.preventDefault();
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
-  });
-
+  }
   function closeTerms() {
     modal.classList.remove('show');
     document.body.style.overflow = '';
   }
 
+  if (openBtn) openBtn.addEventListener('click', openTerms);
   if (closeBtn) closeBtn.addEventListener('click', closeTerms);
-  if (ctaBtn) ctaBtn.addEventListener('click', function() { closeTerms(); });
-  modal.querySelector('.terms-backdrop').addEventListener('click', closeTerms);
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeTerms();
+      var contact = document.getElementById('contact');
+      if (contact) window.scrollTo({ top: contact.offsetTop - 90, behavior: 'smooth' });
+    });
+  }
+
+  var backdrop = modal.querySelector('.terms-backdrop');
+  if (backdrop) backdrop.addEventListener('click', closeTerms);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeTerms();
+  });
 }
 
-/* ── INIT ── */
+/* ── INIT ALL ── */
 document.addEventListener('DOMContentLoaded', function() {
   initLoader();
-  initPaymentTicker();
   initOffline();
-  initSuccessOverlay();
   initPackageModals();
-  initSmoothScroll();
+  initSuccessOverlay();
   initScrollReveal();
+  initSmoothScroll();
   initForm();
   initNavOffset();
   initThemeToggle();
   initTermsModal();
-
-  var statsBar = document.querySelector('.stats-bar');
-  if (statsBar) {
-    var obs = new IntersectionObserver(function(entries) {
-      if (entries[0].isIntersecting) { animateCounters(); obs.disconnect(); }
-    }, { threshold: 0.5 });
-    obs.observe(statsBar);
-  }
+  initPaymentTicker();
+  animateCounters();
 });
-
-/* ── PRICING CARD CLICK (whole card opens modal on mobile) ── */
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.pricing-card').forEach(function(card) {
-    card.addEventListener('click', function(e) {
-      if (e.target.classList.contains('learn-more-btn')) return;
-      var key = card.getAttribute('data-package');
-      if (key) {
-        var modal = document.getElementById('package-modal');
-        if (modal && !modal.classList.contains('show')) {
-          var btn = card.querySelector('.learn-more-btn');
-          if (btn) btn.click();
-        }
-      }
-    });
-  });
-});
-  // Learn more buttons — mobile friendly
-  document.querySelectorAll('.learn-more-btn').forEach(function(btn) {
-    ['click','touchend'].forEach(function(evt) {
-      btn.addEventListener(evt, function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var key = btn.getAttribute('data-package');
-        console.log('Learn more clicked:', key);
-        openModal(key);
-      });
-    });
-  });
-
-  // Close button
-  closeBtn.addEventListener('click', closeModal);
-
-  // Backdrop click closes
-  modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
-}
