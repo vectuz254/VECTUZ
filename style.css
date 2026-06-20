@@ -5,7 +5,7 @@
   --black:#090b0e; --dark:#0f1318; --card:#141920; --border:#1e2530;
   --green:#00e87a; --gold:#f5c842; --red:#e84444; --blue:#3a8fe8;
   --orange:#e87a00; --white:#f0ece4; --muted:#6b7585;
-  --font-display:'Playfair Display',serif; --font-body:'DM Sans',sans-serif;
+  --font-display:'Syne',sans-serif; --font-body:'DM Sans',sans-serif;
   --tier-starter:#3a8fe8; --tier-business:#00e87a;
   --tier-premium:#f5c842; --tier-max:#e84444;
 }
