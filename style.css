@@ -183,7 +183,25 @@ grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(8,1fr);gap:1px}
 .hero-glow{position:absolute;top:30%;right:5%;width:380px;height:380px;
 background:radial-gradient(circle,rgba(0,232,122,.08) 0%,transparent 70%);
 border-radius:50%;filter:blur(40px);pointer-events:none}
-
+.hero-circuit{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.hero-circuit svg{width:100%;height:100%}
+.hero-tag,.hero h1,.hero-sub,.hero-actions{position:relative;z-index:1}
+.circuit-line{fill:none;stroke-width:1.6;stroke-linecap:round}
+.circuit-line--a{stroke:var(--green);opacity:.22;stroke-dasharray:14 10;
+animation:circuitFlow 14s linear infinite}
+.circuit-line--b{stroke:var(--blue);opacity:.16;stroke-dasharray:10 8;
+animation:circuitFlow 18s linear infinite reverse}
+.circuit-trace{fill:none;stroke:var(--green);stroke-width:1.2;opacity:.14}
+.circuit-node{fill:var(--green);opacity:.5;transform-origin:center;
+animation:circuitPulse 3s ease-in-out infinite}
+.circuit-pad{fill:var(--blue);opacity:.4}
+@keyframes circuitFlow{to{stroke-dashoffset:-240}}
+@keyframes circuitPulse{0%,100%{opacity:.25;transform:scale(1)}
+50%{opacity:.9;transform:scale(1.6)}}
+@media (prefers-reduced-motion:reduce){
+.circuit-line,.circuit-node{animation:none}
+}
+[data-theme="light"] .hero-circuit{opacity:.7}
 /* ══ BUTTONS ══ */
 .btn-primary{background:var(--green);color:#090b0e;font-family:var(--font-display);
 font-weight:700;font-size:.95rem;padding:.9rem 2rem;border-radius:6px;
