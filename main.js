@@ -3,15 +3,17 @@
 VECTUZ — main.js (updated)
 ═══════════════════════════════════════════
 */
+
 /* ── THEME GUARD ── */
 (function () {
 var saved = localStorage.getItem('theme') || 'dark';
 if (saved === 'light') {
-  document.documentElement.setAttribute('data-theme', 'light');
+document.documentElement.setAttribute('data-theme', 'light');
 } else {
-  document.documentElement.removeAttribute('data-theme');
+document.documentElement.removeAttribute('data-theme');
 }
 })();
+
 /* ── CUBE COLOURS ── */
 var SCRAMBLED = {
 front: ['#e84444','#f5c842','#3a8fe8','#00c853','#f0ece4','#e87a00','#3a8fe8','#e84444','#f5c842'],
@@ -29,7 +31,8 @@ left: Array(9).fill('#00c853'),
 top: Array(9).fill('#f5c842'),
 bottom: Array(9).fill('#f0ece4'),
 };
-/* ── BUILD CUBE ── */
+
+/* ── BUILD CUBE (CSS Rubik's-style cube — used for Starter / Business / Web Review) ── */
 function buildCube(container, startSolved) {
 container.innerHTML = '';
 var faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
@@ -47,6 +50,7 @@ face.appendChild(cubie);
 container.appendChild(face);
 });
 }
+
 /* ── ANIMATE: scrambled → solved ── */
 function animateSolve(cube, onDone) {
 var faces = cube.querySelectorAll('.cube-face');
@@ -63,6 +67,7 @@ setTimeout(function () { cubie.style.transform = 'scale(1)'; }, 150);
 var total = 6 * 200 + 9 * 60 + 600;
 if (onDone) setTimeout(onDone, total);
 }
+
 /* ── ANIMATE: solved → scrambled ── */
 function animateUnsolve(cube, onDone) {
 var faces = cube.querySelectorAll('.cube-face');
@@ -79,6 +84,7 @@ setTimeout(function () { cubie.style.transform = 'scale(1)'; }, 150);
 var total = 6 * 200 + 9 * 60 + 600;
 if (onDone) setTimeout(onDone, total);
 }
+
 /* ── SCATTER ── */
 function scatterCube(cube) {
 var cubies = cube.querySelectorAll('.cubie');
@@ -92,72 +98,75 @@ c.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,' + rz + 'px) rotate(
 c.style.opacity = '0.3';
 });
 }
-/* ── PAYMENT TICKER ── */
-function initPaymentTicker() {
-var track = document.getElementById('ticker-track');
-if (!track) return;
-function makeItem(method) {
-var a = document.createElement('a');
-a.href = method.url;
-a.target = '_blank';
-a.rel = 'noopener';
-a.className = 'ticker-item ticker-logo-item';
-a.title = method.name;
-var cubeWrap = document.createElement('div');
-cubeWrap.className = 'ticker-cube-wrap';
-var scene = document.createElement('div');
-scene.className = 'ticker-cube-scene';
-var cube = document.createElement('div');
-cube.className = 'ticker-mini-cube';
-buildCube(cube, false);
-scene.appendChild(cube);
-cubeWrap.appendChild(scene);
-a.appendChild(cubeWrap);
-var logoWrap = document.createElement('div');
-logoWrap.className = 'ticker-logo-wrap';
-if (method.logo && typeof BANK_LOGOS !== 'undefined' && BANK_LOGOS[method.logo]) {
-var img = document.createElement('img');
-img.src = BANK_LOGOS[method.logo];
-img.alt = method.name;
-img.className = 'ticker-bank-img';
-logoWrap.appendChild(img);
-} else {
-var emoji = document.createElement('span');
-emoji.className = 'ticker-emoji';
-emoji.textContent = method.emoji;
-var txt = document.createElement('span');
-txt.className = 'ticker-name';
-txt.textContent = method.name;
-logoWrap.appendChild(emoji);
-logoWrap.appendChild(txt);
-}
-a.appendChild(logoWrap);
-a.addEventListener('mouseenter', function () {
-logoWrap.style.opacity = '0';
-logoWrap.style.transform = 'scale(0.8)';
-cubeWrap.style.opacity = '1';
-cubeWrap.style.transform = 'scale(1)';
-cube.style.animation = 'miniCubeSpin 1.2s linear infinite';
+
+/* ── REAL 3D CUBE (Premium / MAX) — rendered with three.js, true WebGL lighting/perspective ── */
+function init3DEnergyCube(container, colorHex) {
+if (typeof THREE === 'undefined' || !container) return null;
+container.innerHTML = '';
+var width = container.clientWidth || 100;
+var height = container.clientHeight || 100;
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+camera.position.set(1.6, 1.3, 2.6);
+camera.lookAt(0, 0, 0);
+
+var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.domElement.className = 'cube3d-canvas';
+container.appendChild(renderer.domElement);
+
+var geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+var material = new THREE.MeshStandardMaterial({
+color: colorHex, metalness: 0.45, roughness: 0.22,
+emissive: colorHex, emissiveIntensity: 0.4
 });
-a.addEventListener('mouseleave', function () {
-logoWrap.style.opacity = '1';
-logoWrap.style.transform = 'scale(1)';
-cubeWrap.style.opacity = '0';
-cubeWrap.style.transform = 'scale(0.8)';
-cube.style.animation = '';
-});
-return a;
+var cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+var wireGeo = new THREE.EdgesGeometry(geometry);
+var wireMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 });
+cube.add(new THREE.LineSegments(wireGeo, wireMat));
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+var dir = new THREE.DirectionalLight(0xffffff, 1.1);
+dir.position.set(2, 3, 4);
+scene.add(dir);
+var rim = new THREE.PointLight(colorHex, 1.6, 12);
+rim.position.set(-2, -1.2, 2);
+scene.add(rim);
+
+var raf;
+function animate() {
+cube.rotation.x += 0.012;
+cube.rotation.y += 0.018;
+renderer.render(scene, camera);
+raf = requestAnimationFrame(animate);
 }
-if (typeof PAYMENT_METHODS !== 'undefined') {
-PAYMENT_METHODS.forEach(function (m) { track.appendChild(makeItem(m)); });
-PAYMENT_METHODS.forEach(function (m) { track.appendChild(makeItem(m)); });
+animate();
+
+function handleResize() {
+var w = container.clientWidth || 100;
+var h = container.clientHeight || 100;
+renderer.setSize(w, h);
+camera.aspect = w / h;
+camera.updateProjectionMatrix();
 }
+window.addEventListener('resize', handleResize);
+
+return {
+canvas: renderer.domElement,
+destroy: function () {
+cancelAnimationFrame(raf);
+window.removeEventListener('resize', handleResize);
+renderer.dispose();
+if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
 }
-/*
-═══════════════════════════════════════════
-PORTFOLIO SLIDES — images matched to category
-═══════════════════════════════════════════
-*/
+};
+}
+
+/* ── PORTFOLIO SLIDES — images matched to category ── */
 var PORTFOLIO_SLIDES = [
 { label: 'Restaurant Site', icon: '🍽', img: 'assets/sample-restaurant.jpg', alt: 'Restaurant dish presentation' },
 { label: 'E-Commerce Store', icon: '🛍', img: 'assets/sample-tech.jpg', alt: 'E-commerce shopping concept' },
@@ -166,6 +175,7 @@ var PORTFOLIO_SLIDES = [
 { label: 'Fashion Brand', icon: '👗', img: 'assets/sample-fashion.jpg', alt: 'Fashion brand street style' },
 { label: 'Tech Startup', icon: '💻', img: 'assets/sample-tech.jpg', alt: 'Tech startup product showcase' },
 ];
+
 function initPortfolioCarousel() {
 var track = document.getElementById('portfolio-track');
 if (!track) return;
@@ -200,17 +210,90 @@ return div;
 PORTFOLIO_SLIDES.forEach(function (s) { track.appendChild(makeSlide(s)); });
 PORTFOLIO_SLIDES.forEach(function (s) { track.appendChild(makeSlide(s)); });
 }
+
+/* ── PAYMENT TICKER ── */
+function initPaymentTicker() {
+var track = document.getElementById('ticker-track');
+if (!track) return;
+
+function makeItem(method) {
+var a = document.createElement('a');
+a.href = method.url;
+a.target = '_blank';
+a.rel = 'noopener';
+a.className = 'ticker-item ticker-logo-item';
+a.title = method.name;
+
+var cubeWrap = document.createElement('div');
+cubeWrap.className = 'ticker-cube-wrap';
+var scene = document.createElement('div');
+scene.className = 'ticker-cube-scene';
+var cube = document.createElement('div');
+cube.className = 'ticker-mini-cube';
+buildCube(cube, false);
+scene.appendChild(cube);
+cubeWrap.appendChild(scene);
+a.appendChild(cubeWrap);
+
+var logoWrap = document.createElement('div');
+logoWrap.className = 'ticker-logo-wrap';
+if (method.logo && typeof BANK_LOGOS !== 'undefined' && BANK_LOGOS[method.logo]) {
+var img = document.createElement('img');
+img.src = BANK_LOGOS[method.logo];
+img.alt = method.name;
+img.className = 'ticker-bank-img';
+logoWrap.appendChild(img);
+} else {
+var emoji = document.createElement('span');
+emoji.className = 'ticker-emoji';
+emoji.textContent = method.emoji;
+var txt = document.createElement('span');
+txt.className = 'ticker-name';
+txt.textContent = method.name;
+logoWrap.appendChild(emoji);
+logoWrap.appendChild(txt);
+}
+a.appendChild(logoWrap);
+
+a.addEventListener('mouseenter', function () {
+logoWrap.style.opacity = '0';
+logoWrap.style.transform = 'scale(0.8)';
+cubeWrap.style.opacity = '1';
+cubeWrap.style.transform = 'scale(1)';
+cube.style.animation = 'miniCubeSpin 1.2s linear infinite';
+});
+a.addEventListener('mouseleave', function () {
+logoWrap.style.opacity = '1';
+logoWrap.style.transform = 'scale(1)';
+cubeWrap.style.opacity = '0';
+cubeWrap.style.transform = 'scale(0.8)';
+cube.style.animation = '';
+});
+
+return a;
+}
+
+if (typeof PAYMENT_METHODS !== 'undefined') {
+PAYMENT_METHODS.forEach(function (m) { track.appendChild(makeItem(m)); });
+PAYMENT_METHODS.forEach(function (m) { track.appendChild(makeItem(m)); });
+} else {
+console.warn('VECTUZ: PAYMENT_METHODS not found — make sure payment-methods.js is loaded before main.js.');
+}
+}
 /* ── LOADER ── */
 function initLoader() {
 var loader = document.getElementById('loader');
 var loaderCube = document.getElementById('loader-cube');
 if (!loader || !loaderCube) return;
- 
-// Hard fallback so the loader can never get permanently stuck
+
+/* BUG FIX: the old 2200ms hard fallback fired *before* the solve
+   animation (~2490ms total) finished, so the loader would vanish
+   mid-spin. The fallback now sits safely after the real animation
+   and only triggers if something actually goes wrong. */
 var hideTimeout = setTimeout(function () {
 loader.classList.add('hidden');
-}, 2200);
- 
+}, 2900);
+
 buildCube(loaderCube, false);
 setTimeout(function () {
 animateSolve(loaderCube, function () {
@@ -219,11 +302,13 @@ loader.classList.add('hidden');
 });
 }, 150);
 }
+
 /* ── OFFLINE DETECTION ── */
 function initOffline() {
 var overlay = document.getElementById('offline-overlay');
 var cube = document.getElementById('offline-cube');
 if (!overlay || !cube) return;
+
 function showOffline() {
 buildCube(cube, false);
 overlay.classList.add('show');
@@ -236,6 +321,7 @@ if (!navigator.onLine) showOffline();
 window.addEventListener('offline', showOffline);
 window.addEventListener('online', hideOffline);
 }
+
 /* ── PACKAGE DATA ── */
 var PACKAGES = {
 starter: {
@@ -277,7 +363,9 @@ features: [
 ],
 },
 max: {
-name: 'MAX', price: 'KES 200k–300k', color: '#9b5de5',
+/* BUG FIX: this used to say "KES 200k–300k" here while the pricing
+   card on the page said "KES 200k–600k". Now consistent everywhere. */
+name: 'MAX', price: 'KES 200k–600k', color: '#9b5de5',
 tagline: 'Total digital transformation.',
 features: [
 { title: 'Custom Web Application', desc: 'A fully bespoke web app built around your business processes — portals, dashboards, automation, workflows.' },
@@ -294,31 +382,48 @@ features: [
 { title: '6 Months Dedicated Support', desc: 'Six months of priority support — your dedicated point of contact for anything you need.' },
 ],
 },
+review: {
+name: 'Web Review', price: 'KES 0', color: '#2dd9c4',
+tagline: "It's free. We just want to show you what's possible.",
+features: [
+{ title: 'Full Walkthrough', desc: 'We go through your existing website page by page, the way a real customer would.' },
+{ title: 'Mock-Up Analysis', desc: 'We put together a quick visual mock-up showing exactly how a few key improvements would look.' },
+{ title: 'Conversion Trouble Spots', desc: 'We flag the specific things most likely costing you customers — slow load times, confusing navigation, weak calls-to-action, and more.' },
+{ title: 'No Obligation', desc: 'You keep the feedback either way. If you want us to build the improvements, great — if not, that\'s fine too.' },
+],
+},
 };
+
 /* ── PACKAGE MODAL ── */
 function initPackageModals() {
 var modal = document.getElementById('package-modal');
 var modalCube = document.getElementById('modal-cube');
+var modalCubeScene = document.getElementById('modal-cube-scene');
 var modalBody = document.getElementById('modal-body');
 var closeBtn = document.getElementById('modal-close');
 if (!modal) return;
+
 var loopActive = false;
 var energyTimers = [];
- 
+var punchInterval = null;
+var active3DCube = null;
+
 function clearEnergyTimers() {
 energyTimers.forEach(function (t) { clearTimeout(t); });
 energyTimers = [];
 }
- 
+
 function openModal(packageKey) {
 var pkg = PACKAGES[packageKey];
 if (!pkg) return;
+
 var featuresHTML = pkg.features.map(function (f) {
 return '<div class="modal-feature">' +
 '<div class="modal-feature-title" style="color:' + pkg.color + '">✓ ' + f.title + '</div>' +
 '<div class="modal-feature-desc">' + f.desc + '</div>' +
 '</div>';
 }).join('');
+
 modalBody.innerHTML =
 '<div class="modal-header">' +
 '<div class="modal-plan-name" style="color:' + pkg.color + '">' + pkg.name + '</div>' +
@@ -329,36 +434,52 @@ modalBody.innerHTML =
 '<a href="#contact" class="modal-cta" style="background:' + pkg.color + ';color:' +
 (packageKey === 'max' || packageKey === 'premium' ? '#fff' : '#090b0e')
 + '" id="modal-cta-btn">Get Started →</a>';
- 
-buildCube(modalCube, false);
+
 modal.classList.add('show');
 document.body.style.overflow = 'hidden';
 loopActive = true;
- 
+
 var ewaves = [
 document.getElementById('ewave1'),
 document.getElementById('ewave2'),
 document.getElementById('ewave3'),
 ];
- 
-// Premium and MAX get the explosive purple-energy spinning cube
+
+/* Premium and MAX get the real 3D WebGL cube with purple energy glow.
+   MAX "pops" harder than Premium — bigger punch, on every wave pulse. */
 var isEnergyTier = (packageKey === 'premium' || packageKey === 'max');
- 
-if (isEnergyTier) {
-modalCube.classList.add('energy-mode');
+
+if (isEnergyTier && typeof THREE !== 'undefined') {
+modalCubeScene.classList.add('energy-scene');
 ewaves.forEach(function (w) { if (w) w.classList.add('active'); });
-} else {
-modalCube.classList.remove('energy-mode');
-ewaves.forEach(function (w) { if (w) w.classList.remove('active'); });
+active3DCube = init3DEnergyCube(modalCubeScene, pkg.color);
+// re-append energy wave elements on top of the new canvas
+ewaves.forEach(function (w) { if (w) modalCubeScene.appendChild(w); });
+
+var punchClass = packageKey === 'max' ? 'punch-max' : 'punch';
+function doPunch() {
+if (!active3DCube || !active3DCube.canvas) return;
+active3DCube.canvas.classList.remove(punchClass);
+// restart animation
+void active3DCube.canvas.offsetWidth;
+active3DCube.canvas.classList.add(punchClass);
 }
- 
+doPunch();
+punchInterval = setInterval(doPunch, 1600);
+} else {
+modalCubeScene.classList.remove('energy-scene');
+ewaves.forEach(function (w) { if (w) w.classList.remove('active'); });
+buildCube(modalCube, false);
+modalCube.style.display = '';
+
 var t1 = setTimeout(function () { scatterCubeModal(modalCube); }, 350);
 var t2 = setTimeout(function () {
 buildCube(modalCube, false);
 loopSolve();
 }, 1600);
 energyTimers.push(t1, t2);
- 
+}
+
 function loopSolve() {
 if (!loopActive) return;
 animateSolve(modalCube, function () {
@@ -373,7 +494,7 @@ energyTimers.push(t2);
 energyTimers.push(t);
 });
 }
- 
+
 var t3 = setTimeout(function () {
 var ctaBtn = document.getElementById('modal-cta-btn');
 if (ctaBtn) {
@@ -387,7 +508,7 @@ if (contact) window.scrollTo({ top: contact.offsetTop - 90, behavior: 'smooth' }
 }, 100);
 energyTimers.push(t3);
 }
- 
+
 function scatterCubeModal(cube) {
 var faces = cube.querySelectorAll('.cube-face');
 faces.forEach(function (face) {
@@ -399,26 +520,36 @@ face.style.transform += ' translate3d(' + rx + 'px,' + ry + 'px,0) rotate(' + ro
 face.style.opacity = '0';
 });
 }
- 
+
 function closeModal() {
 loopActive = false;
 clearEnergyTimers();
+if (punchInterval) { clearInterval(punchInterval); punchInterval = null; }
+if (active3DCube) { active3DCube.destroy(); active3DCube = null; }
 modal.classList.remove('show');
 document.body.style.overflow = '';
-modalCube.classList.remove('energy-mode');
+modalCubeScene.classList.remove('energy-scene');
+modalCube.style.display = '';
 ['ewave1', 'ewave2', 'ewave3'].forEach(function (id) {
 var w = document.getElementById(id);
 if (w) w.classList.remove('active');
 });
 }
- 
+
 document.querySelectorAll('.learn-more-btn').forEach(function (btn) {
 btn.addEventListener('click', function (e) {
 e.preventDefault();
 e.stopPropagation();
-openModal(btn.getAttribute('data-package'));
+var key = btn.getAttribute('data-package');
+if (key === 'max') {
+btn.classList.remove('pop-punch');
+void btn.offsetWidth;
+btn.classList.add('pop-punch');
+}
+openModal(key);
 });
 });
+
 closeBtn.addEventListener('click', closeModal);
 var backdrop = modal.querySelector('.modal-backdrop');
 if (backdrop) backdrop.addEventListener('click', closeModal);
@@ -428,11 +559,13 @@ function initSuccessOverlay() {
 var overlay = document.getElementById('form-success-overlay');
 var cube = document.getElementById('success-cube');
 if (!overlay || !cube) return;
+
 var loopActive = false;
 window.showSuccessOverlay = function () {
 buildCube(cube, false);
 overlay.classList.add('show');
 loopActive = true;
+
 function loop() {
 if (!loopActive) return;
 animateSolve(cube, function () {
@@ -446,16 +579,18 @@ setTimeout(loop, 600);
 });
 }
 loop();
+
 setTimeout(function () {
 loopActive = false;
 overlay.classList.remove('show');
 }, 5000);
 };
 }
+
 /* ── SCROLL REVEAL ── */
 function initScrollReveal() {
 var targets = document.querySelectorAll(
-'.service-card, .pricing-card, .process-step, .why-point, .stat, .trust-item'
+'.service-card, .pricing-card, .process-step, .why-point, .stat, .testimonial-card, .faq-item'
 );
 var observer = new IntersectionObserver(function (entries) {
 entries.forEach(function (entry) {
@@ -466,15 +601,17 @@ observer.unobserve(entry.target);
 }
 });
 }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
 targets.forEach(function (el, i) {
 el.style.opacity = '0';
 el.style.transform = 'translateY(28px) scale(.98)';
 el.style.transition =
-'opacity 0.9s ' + (i * 0.06) + 's cubic-bezier(.16,1,.3,1), ' +
-'transform 0.9s ' + (i * 0.06) + 's cubic-bezier(.16,1,.3,1)';
+'opacity 0.7s ' + (i * 0.05) + 's cubic-bezier(.34,1.56,.64,1), ' +
+'transform 0.7s ' + (i * 0.05) + 's cubic-bezier(.34,1.56,.64,1)';
 observer.observe(el);
 });
 }
+
 /* ── SMOOTH SCROLL ── */
 function initSmoothScroll() {
 document.querySelectorAll('a[href^="#"]').forEach(function (a) {
@@ -487,6 +624,7 @@ window.scrollTo({ top: target.offsetTop - 90, behavior: 'smooth' });
 });
 });
 }
+
 /* ── COUNTERS ── */
 function animateCounters() {
 document.querySelectorAll('.stat-num[data-target]').forEach(function (el) {
@@ -495,6 +633,7 @@ var suffix = el.dataset.suffix || '';
 var duration = 1800;
 var start = performance.now();
 var isInt = Number.isInteger(target);
+
 function update(now) {
 var progress = Math.min((now - start) / duration, 1);
 var eased = 1 - Math.pow(1 - progress, 3);
@@ -505,17 +644,22 @@ if (progress < 1) requestAnimationFrame(update);
 requestAnimationFrame(update);
 });
 }
+
 /* ── CONTACT FORM ── */
 function initForm() {
 var form = document.getElementById('contact-form');
 if (!form) return;
+
 form.addEventListener('submit', async function (e) {
 e.preventDefault();
 var btn = form.querySelector('.form-submit');
 var originalText = btn.textContent;
 btn.textContent = 'Sending...';
 btn.disabled = true;
-var googleScriptUrl = 'https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec';
+
+var googleScriptUrl =
+'https://script.google.com/macros/s/AKfycby6mIxaLXiOa0ZqxL93uf31KNtOeMVvJ3s2Bo4QzW_dhAEeytwcyh5dv1DIpI13HLmZAg/exec';
+
 try {
 await fetch(googleScriptUrl, { method: 'POST', mode: 'no-cors', body: new FormData(form) });
 form.reset();
@@ -534,6 +678,7 @@ btn.disabled = false;
 }
 });
 }
+
 /* ── NAV OFFSET ── */
 function initNavOffset() {
 var banner = document.querySelector('.discount-banner');
@@ -545,11 +690,13 @@ window.addEventListener('scroll', function () {
 nav.style.top = window.scrollY > h ? '0' : (h - window.scrollY) + 'px';
 });
 }
+
 /* ── THEME TOGGLE ── */
 function initThemeToggle() {
 var btn = document.getElementById('theme-toggle');
 if (!btn) return;
 var icon = btn.querySelector('.toggle-icon');
+
 function getCurrentTheme() {
 return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
 }
@@ -567,6 +714,7 @@ btn.addEventListener('click', function () {
 applyTheme(getCurrentTheme() === 'dark' ? 'light' : 'dark');
 });
 }
+
 /* ── TERMS MODAL ── */
 function initTermsModal() {
 var openBtn = document.getElementById('open-terms');
@@ -575,6 +723,7 @@ var modal = document.getElementById('terms-modal');
 var closeBtn = document.getElementById('terms-close');
 var ctaBtn = document.getElementById('terms-cta-btn');
 if (!modal) return;
+
 function openTerms(e) {
 if (e) e.preventDefault();
 modal.classList.add('show');
@@ -591,6 +740,31 @@ if (ctaBtn) ctaBtn.addEventListener('click', closeTerms);
 var backdrop = modal.querySelector('.terms-backdrop');
 if (backdrop) backdrop.addEventListener('click', closeTerms);
 }
+
+/* ── FAQ ACCORDION ── */
+function initFAQ() {
+var items = document.querySelectorAll('.faq-item');
+if (!items.length) return;
+
+items.forEach(function (item) {
+var question = item.querySelector('.faq-question');
+var answer = item.querySelector('.faq-answer');
+if (!question || !answer) return;
+
+question.addEventListener('click', function () {
+var isOpen = item.classList.contains('open');
+items.forEach(function (other) {
+other.classList.remove('open');
+other.querySelector('.faq-answer').style.maxHeight = '0px';
+});
+if (!isOpen) {
+item.classList.add('open');
+answer.style.maxHeight = answer.scrollHeight + 'px';
+}
+});
+});
+}
+
 /* ── PRICING CARD CLICK ── */
 function initPricingCardClick() {
 document.querySelectorAll('.pricing-card').forEach(function (card) {
@@ -607,6 +781,7 @@ if (btn) btn.click();
 });
 });
 }
+
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', function () {
 initLoader();
@@ -622,7 +797,8 @@ initForm();
 initNavOffset();
 initThemeToggle();
 initTermsModal();
- 
+initFAQ();
+
 var statsBar = document.querySelector('.stats-bar');
 if (statsBar) {
 var obs = new IntersectionObserver(function (entries) {
