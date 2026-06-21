@@ -280,6 +280,7 @@ PAYMENT_METHODS.forEach(function (m) { track.appendChild(makeItem(m)); });
 console.warn('VECTUZ: PAYMENT_METHODS not found — make sure payment-methods.js is loaded before main.js.');
 }
 }
+
 /* ── LOADER ── */
 function initLoader() {
 var loader = document.getElementById('loader');
@@ -554,6 +555,7 @@ closeBtn.addEventListener('click', closeModal);
 var backdrop = modal.querySelector('.modal-backdrop');
 if (backdrop) backdrop.addEventListener('click', closeModal);
 }
+
 /* ── SUCCESS OVERLAY ── */
 function initSuccessOverlay() {
 var overlay = document.getElementById('form-success-overlay');
