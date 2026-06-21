@@ -768,6 +768,14 @@ answer.style.maxHeight = answer.scrollHeight + 'px';
 }
 
 /* ── PRICING CARD CLICK ── */
+function initHeroCircuit() {
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+document.querySelectorAll('.circuit-node').forEach(function (node, i) {
+node.style.animationDelay = (i * 0.4 + Math.random() * 1.2).toFixed(2) + 's';
+});
+}
+
+</parameter>
 function initPricingCardClick() {
 document.querySelectorAll('.pricing-card').forEach(function (card) {
 card.addEventListener('click', function (e) {
