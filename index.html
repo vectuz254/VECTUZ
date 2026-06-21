@@ -4,12 +4,26 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>VECTUZ | Web Design Kenya</title>
-<meta name="description" content="Custom websites, e-commerce & M-Pesa checkout —
+<meta name="description" content="Custom websites, e-commerce &amp; M-Pesa checkout —
 built fast for Kenyan SMEs. Delivered in as little as 5 business days."/>
-<link rel="icon" href="logo.png" type="image/png"/>
+<link rel="icon" href="128672.png" type="image/png"/>
 <link
 href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
+<!-- CRITICAL INLINE CSS: keeps overlays/modals hidden from the very first paint,
+     even before style.css finishes loading (or if it fails to load at all, e.g.
+     no connection). Without this, every hidden overlay's text — "You're Offline",
+     "Message Sent!", the ✕ close button, etc. — dumps onto the page as plain
+     visible text, exactly like the screenshot. Values match style.css exactly,
+     so once style.css loads it takes over with no visual change. -->
+<style>
+.offline-overlay,.form-success-overlay,.package-modal,.terms-modal{
+position:fixed;inset:0;opacity:0;visibility:hidden;pointer-events:none}
+.offline-overlay.show,.form-success-overlay.show,.package-modal.show,.terms-modal.show{
+opacity:1;visibility:visible;pointer-events:auto}
+#loader{position:fixed;inset:0;background:#090b0e;display:flex;
+align-items:center;justify-content:center;z-index:9999}
+</style>
 </head>
 <body>
 <!-- ══════════════════════════════ OFFLINE OVERLAY ══════════════════════════════ -->
@@ -70,7 +84,7 @@ guaranteed
 <!-- ══════════════════════════════ NAV ══════════════════════════════ -->
 <nav>
 <a href="#home" class="logo">
-<img src="logo.png" alt="VECTUZ"/>
+<img src="128672.png" alt="VECTUZ"/>
 <span class="logo-text">VECT<span>UZ</span></span>
 </a>
 <ul class="nav-links">
@@ -268,6 +282,7 @@ convert.</p>
 </div>
 </div>
 </section>
+
 <!-- ══════════════════════════════ TESTIMONIALS ══════════════════════════════ -->
 <section class="testimonials" id="testimonials">
 <div class="section-tag">What Clients Say</div>
@@ -471,6 +486,46 @@ scale.</p>
 </div>
 </div>
 </section>
+
+<!-- ══════════════════════════════ RESOURCES / TRUST ══════════════════════════════ -->
+<section class="services" id="resources">
+<div class="services-header">
+<div>
+<div class="section-tag">Resources</div>
+<h2 class="section-title">Helpful Guides &amp;<br/><em>Documentation</em></h2>
+</div>
+<p class="services-intro">A few things we've put together to help you understand the
+process, pricing, and what to expect when working with us.</p>
+</div>
+<div class="services-grid">
+<div class="service-card">
+<span class="service-icon">📋</span>
+<div class="service-title">Our Process Explained</div>
+<p class="service-desc">A breakdown of every stage from discovery call to launch, so you
+always know what's happening and when.</p>
+</div>
+<div class="service-card">
+<span class="service-icon">💳</span>
+<div class="service-title">Payment &amp; Deposit Guide</div>
+<p class="service-desc">How our 50/50 deposit structure works, accepted payment
+methods, and what happens at each milestone.</p>
+</div>
+<div class="service-card">
+<span class="service-icon">🛠</span>
+<div class="service-title">Post-Launch Support</div>
+<p class="service-desc">What's covered under your free support period, how to request
+changes, and response times.</p>
+</div>
+<div class="service-card">
+<span class="service-icon">📄</span>
+<div class="service-title">Terms &amp; Conditions</div>
+<p class="service-desc">Full details on revisions, delivery timelines, intellectual property,
+and data privacy. <a href="#terms" id="open-terms-banner"
+style="color:var(--green);font-weight:600;">Read the full terms →</a></p>
+</div>
+</div>
+</section>
+
 <!-- ══════════════════════════════ CONTACT ══════════════════════════════ -->
 <section class="contact" id="contact">
 <div class="contact-inner">
