@@ -794,6 +794,7 @@ if (btn) btn.click();
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', function () {
+initHeroCircuit();
 initLoader();
 initPaymentTicker();
 initPortfolioCarousel();
