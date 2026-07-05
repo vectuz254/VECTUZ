@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════
+VECTUZ — Card & Architecture Upgrade
+(AgroSense-style floating cards + feature grid,
+re-themed to VECTUZ black/neon-green, plus iOS-style motion)
+Append this AFTER your existing style.css
+═══════════════════════════════════════════ */
+
+/* ── iOS-style spring, replaces the snappier default ── */
+:root{
+  --ease-ios: cubic-bezier(.22,1,.36,1);
+  --ease-ios-bounce: cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── FEATURE ICON CARDS (AgroSense .feature-card, VECTUZ themed) ── */
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.25rem;
+  margin-top:3rem;
+}
+.feature-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:2rem;
+  position:relative;
+  overflow:hidden;
+  transition:transform .5s var(--ease-ios), border-color .4s var(--ease-ios), box-shadow .5s var(--ease-ios);
+}
+.feature-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--green);
+  box-shadow:0 20px 44px rgba(0,232,122,.14);
+}
+.feature-icon-circle{
+  width:52px;height:52px;border-radius:14px;
+  background:rgba(0,232,122,.1);
+  border:1px solid rgba(0,232,122,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;margin-bottom:1.2rem;
+  transition:transform .45s var(--ease-ios-bounce), background .4s var(--ease-ios);
+}
+.feature-card:hover .feature-icon-circle{
+  transform:scale(1.08) rotate(-4deg);
+  background:rgba(0,232,122,.16);
+}
+.feature-card h3{
+  font-family:var(--font-display);font-weight:700;font-size:1.05rem;margin-bottom:.6rem;
+}
+.feature-card p{color:var(--muted);font-size:.88rem;line-height:1.65}
+
+/* ── FLOATING DATA CARDS (AgroSense .floating-card, VECTUZ themed) ──
+   Use inside a .hero-visual-panel to show live-feeling stats,
+   e.g. "Sites Delivered", "Avg. Build Time", "Uptime" */
+.hero-visual-panel{
+  position:relative;
+  min-height:420px;
+  display:flex;align-items:center;justify-content:center;
+}
+.floating-card{
+  position:absolute;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1rem 1.3rem;
+  display:flex;align-items:center;gap:.9rem;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  animation:cardFloat 6s ease-in-out infinite;
+  transition:transform .5s var(--ease-ios);
+}
+.floating-card:hover{transform:translateY(-4px) scale(1.03)}
+.floating-card .fc-icon{font-size:1.5rem;line-height:1}
+.floating-card .fc-data{display:flex;flex-direction:column}
+.floating-card .fc-val{font-family:var(--font-display);font-weight:800;font-size:1.3rem;color:var(--green)}
+.floating-card .fc-label{font-size:.72rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.floating-card .pulse-ring{
+  position:absolute;inset:-1px;border-radius:16px;
+  border:1px solid var(--green);opacity:0;
+  animation:ringPulse 3s ease-out infinite;
+}
+.fc1{top:6%;left:2%;animation-delay:0s}
+.fc2{top:42%;right:0;animation-delay:1.2s}
+.fc3{bottom:8%;left:14%;animation-delay:2.4s}
+
+@keyframes cardFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+@keyframes ringPulse{
+  0%{transform:scale(1);opacity:.5}
+  100%{transform:scale(1.25);opacity:0}
+}
+
+/* ── iOS-style smooth reveal (replace scroll-reveal timing) ── */
+.ios-reveal{
+  opacity:0;
+  transform:translateY(22px) scale(.985);
+  transition:opacity .7s var(--ease-ios), transform .7s var(--ease-ios);
+}
+.ios-reveal.in-view{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+/* ── iOS-style press feedback for buttons/cards (rubber-band settle) ── */
+.ios-press{transition:transform .35s var(--ease-ios-bounce)}
+.ios-press:active{transform:scale(.965)}
+
+@media (prefers-reduced-motion:reduce){
+  .floating-card,.floating-card .pulse-ring,.ios-reveal{animation:none;transition:none}
+}
+
+@media (max-width:768px){
+  .hero-visual-panel{display:none}
+  .feature-grid{grid-template-columns:1fr}
+}
