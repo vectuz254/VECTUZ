@@ -795,6 +795,7 @@ initPackageModals();
 initPricingCardClick();
 initSmoothScroll();
 initScrollReveal();
+ initIOSReveal();
 initForm();
 initNavOffset();
 initThemeToggle();
