@@ -613,6 +613,15 @@ el.style.transition =
 observer.observe(el);
 });
 }
+ function initIOSReveal() {
+    var els = document.querySelectorAll('.ios-reveal');
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function (el) { obs.observe(el); });
+  }
 
 /* ── SMOOTH SCROLL ── */
 function initSmoothScroll() {
