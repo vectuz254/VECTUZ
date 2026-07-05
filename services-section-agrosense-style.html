@@ -1,0 +1,92 @@
+<!-- ═══════════════════════════════════════════
+  REPLACE your existing <section class="services" id="services"> ...
+  services-grid block with this. Keeps your data/pricing, changes the
+  card look to the AgroSense-style icon-circle feature card.
+  Requires vectuz-card-upgrade.css to be linked after style.css.
+  ═══════════════════════════════════════════ -->
+
+<section class="services" id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-tag">What We Build</div>
+      <h2 class="section-title">Services Built for<br/><em>Kenyan Business</em></h2>
+    </div>
+    <p class="services-intro">Everything your SME needs to show up online — professionally, fast, and affordably.</p>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card ios-reveal">
+      <div class="feature-icon-circle">🖥</div>
+      <h3>Custom Web Design</h3>
+      <p>Handcrafted websites that reflect your brand identity. No templates — every pixel tailored to your business.</p>
+      <div class="service-price">Starting from KES 24,599</div>
+    </div>
+    <div class="feature-card ios-reveal">
+      <div class="feature-icon-circle">🛒</div>
+      <h3>E-Commerce Stores</h3>
+      <p>Sell online with product catalogues, inventory management, and a smooth buying experience for your customers.</p>
+      <div class="service-price">Starting from KES 74,999</div>
+    </div>
+    <div class="feature-card ios-reveal">
+      <div class="feature-icon-circle">🔒</div>
+      <h3>Secure Checkout</h3>
+      <p>M-Pesa, card, and mobile money integrations. Your customers pay safely — you get paid on time.</p>
+      <div class="service-price">Included with E-Commerce</div>
+    </div>
+    <div class="feature-card ios-reveal">
+      <div class="feature-icon-circle">📱</div>
+      <h3>Mobile-First Design</h3>
+      <p>Built for Kenyan users on mobile. Fast loading, touch-friendly, and beautiful on any screen size.</p>
+      <div class="service-price">Included in all packages</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+  OPTIONAL: AgroSense-style floating stat panel.
+  Drop this inside your hero section, next to the h1/hero-sub,
+  as a second grid column (add `display:grid;grid-template-columns:1fr 420px;`
+  to .hero on desktop, or just place it under .hero-actions on mobile).
+  ═══════════════════════════════════════════ -->
+
+<div class="hero-visual-panel" aria-hidden="true">
+  <div class="floating-card fc1">
+    <span class="fc-icon">⚡</span>
+    <div class="fc-data">
+      <span class="fc-val">5 Days</span>
+      <span class="fc-label">Fastest Delivery</span>
+    </div>
+    <div class="pulse-ring"></div>
+  </div>
+  <div class="floating-card fc2">
+    <span class="fc-icon">💳</span>
+    <div class="fc-data">
+      <span class="fc-val">M-Pesa</span>
+      <span class="fc-label">Checkout Ready</span>
+    </div>
+  </div>
+  <div class="floating-card fc3">
+    <span class="fc-icon">📱</span>
+    <div class="fc-data">
+      <span class="fc-val">100%</span>
+      <span class="fc-label">Mobile-First</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  Add this tiny observer to main.js (near initScrollReveal) so
+  .ios-reveal elements fade in with the smoother iOS easing instead
+  of the existing bouncier reveal:
+
+  function initIOSReveal() {
+    var els = document.querySelectorAll('.ios-reveal');
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function (el) { obs.observe(el); });
+  }
+  // then call initIOSReveal() inside your DOMContentLoaded block
+  ═══════════════════════════════════════════ -->
