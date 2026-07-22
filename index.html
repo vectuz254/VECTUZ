@@ -1,143 +1,749 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VECTUZ - Digital Excellence</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VECTUZ | Web Design Kenya</title>
+<meta name="description" content="Custom websites, e-commerce &amp; M-Pesa checkout —
+built fast for Kenyan SMEs. Delivered in as little as 5 business days."/>
+<link rel="icon" href="logo.png" type="image/png"/>
+<link
+href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,
+700;0,800;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="vectuz-upgrade.css"/>
+<!-- CRITICAL INLINE CSS: keeps overlays/modals hidden from the very first paint,
+even before style.css finishes loading (or if it fails to load at all, e.g.
+no connection). Without this, every hidden overlay's text — "You're Offline",
+"Message Sent!", the ✕ close button, etc. — dumps onto the page as plain
+visible text, exactly like the screenshot. Values match style.css exactly,
+so once style.css loads it takes over with no visual change. -->
+<style>
+.offline-overlay,.form-success-overlay,.package-modal,.terms-modal{
+position:fixed;inset:0;opacity:0;visibility:hidden;pointer-events:none}
+.offline-overlay.show,.form-success-overlay.show,.package-modal.show,.terms-modal.show{
+opacity:1;visibility:visible;pointer-events:auto}
+#loader{position:fixed;inset:0;background:#090b0e;display:flex;
+align-items:center;justify-content:center;z-index:9999}
+</style>
 </head>
 <body>
-
-    <!-- Smooth Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Client Portal Login</h2>
-            <input type="email" placeholder="Email Address">
-            <input type="password" placeholder="Password">
-            <button class="action-btn">Access Dashboard</button>
-        </div>
-    </div>
-
-    <!-- Navigation with 3D Rubik's Logo -->
-    <nav>
-        <div class="logo-container">
-            <div class="rubiks-cube">
-                <div class="face front"></div>
-                <div class="face back"></div>
-                <div class="face right"></div>
-                <div class="face left"></div>
-                <div class="face top"></div>
-                <div class="face bottom"></div>
-            </div>
-            <span class="brand-name">VECTUZ</span>
-        </div>
-        <button id="loginBtn" class="nav-btn">Login</button>
-    </nav>
-
-    <!-- Hero Section with Background Video -->
-    <header class="hero">
-        <!-- Replace src with your video of someone scrolling/being happy -->
-        <video autoplay loop muted playsinline class="hero-video">
-            <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay">
-            <h1>Elevate Your Digital Presence</h1>
-            <p>High-performance web solutions engineered for growth.</p>
-            <button class="action-btn">Get Started</button>
-        </div>
-    </header>
-
-    <!-- Rising Graph Animation Section -->
-    <section class="success-metrics">
-        <h2>Post-Launch Growth Simulation</h2>
-        <p>Watch what happens when you partner with us.</p>
-        <div class="graph-container" id="growthGraph">
-            <div class="bar bar-1"></div>
-            <div class="bar bar-2"></div>
-            <div class="bar bar-3"></div>
-            <div class="bar bar-4"></div>
-            <div class="bar bar-5"></div>
-        </div>
-    </section>
-
-    <!-- Why Us & Benefits Section -->
-    <section class="benefits">
-        <h2>Why You Need a Website & Why VECTUZ</h2>
-        <div class="cards-grid">
-            <div class="card">
-                <h3>Global Reach, Local Impact</h3>
-                <p>A website operates 24/7. Capture leads and close sales while you sleep, expanding your market far beyond physical borders.</p>
-            </div>
-            <div class="card">
-                <h3>Rapid 24-Hour Deployment</h3>
-                <p>We understand the value of time. We can engineer and launch highly responsive, operational sites at algorithmic speeds.</p>
-            </div>
-            <div class="card">
-                <h3>Conversion-Optimized</h3>
-                <p>We don't just build sites; we build systems designed to convert visitors into loyal clients using data-driven layouts.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Attractive Pricing Cards -->
-    <section class="pricing">
-        <h2>Investment in Your Growth</h2>
-        <div class="cards-grid">
-            <div class="card pricing-card">
-                <h3>Starter</h3>
-                <h4 class="price">$299</h4>
-                <ul>
-                    <li>Responsive Design</li>
-                    <li>Basic SEO Setup</li>
-                    <li>3 Pages</li>
-                </ul>
-                <button class="action-btn-outline">Learn More</button>
-            </div>
-            <div class="card pricing-card featured">
-                <h3>Professional</h3>
-                <h4 class="price">$599</h4>
-                <ul>
-                    <li>Custom UI/UX Animations</li>
-                    <li>Advanced SEO & Analytics</li>
-                    <li>Payment Gateway Integration</li>
-                </ul>
-                <button class="action-btn">Learn More</button>
-            </div>
-            <div class="card pricing-card">
-                <h3>Enterprise</h3>
-                <h4 class="price">Custom</h4>
-                <ul>
-                    <li>Full System Architecture</li>
-                    <li>Custom Portals</li>
-                    <li>Ongoing Algorithmic Optimization</li>
-                </ul>
-                <button class="action-btn-outline">Learn More</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Payment Gateways Slider -->
-    <section class="payment-partners">
-        <h2>Seamless Integrations</h2>
-        <div class="slider-container">
-            <div class="slider-track">
-                <!-- Duplicate logos for infinite scroll effect -->
-                <div class="slide">M-PESA</div>
-                <div class="slide">KCB</div>
-                <div class="slide">DTB</div>
-                <div class="slide">VISA</div>
-                <div class="slide">MASTERCARD</div>
-                <!-- Duplicates -->
-                <div class="slide">M-PESA</div>
-                <div class="slide">KCB</div>
-                <div class="slide">DTB</div>
-                <div class="slide">VISA</div>
-                <div class="slide">MASTERCARD</div>
-            </div>
-        </div>
-    </section>
-
-    <script src="script.js"></script>
+<!-- ══════════════════════════════ OFFLINE OVERLAY
+══════════════════════════════ -->
+<div id="offline-overlay" class="offline-overlay">
+<div class="offline-cube-scene">
+<div class="offline-cube" id="offline-cube"></div>
+</div>
+<h2 class="offline-title">You're Offline</h2>
+<p class="offline-msg">Your device is disconnected. Please check your internet
+connection.</p>
+<div class="offline-dots">
+<span></span><span></span><span></span>
+</div>
+</div>
+<!-- ══════════════════════════════ LOADER
+══════════════════════════════ -->
+<div id="loader">
+<div class="loader-cube-scene">
+<div class="loader-cube" id="loader-cube"></div>
+</div>
+</div>
+<!-- ══════════════════════════════ FORM SUCCESS OVERLAY
+══════════════════════════════ -->
+<div id="form-success-overlay" class="form-success-overlay">
+<div class="success-cube-scene">
+<div class="success-cube" id="success-cube"></div>
+</div>
+<div class="success-text">
+<div class="success-icon">✓</div>
+<h3>Message Sent!</h3>
+<p>We'll get back to you within a few hours.</p>
+</div>
+</div>
+<!-- ══════════════════════════════ PACKAGE MODAL
+══════════════════════════════ -->
+<div id="package-modal" class="package-modal">
+<div class="modal-backdrop"></div>
+<div class="modal-content">
+<button class="modal-close" id="modal-close">✕</button>
+<div class="modal-cube-scene" id="modal-cube-scene">
+<div class="modal-cube" id="modal-cube"></div>
+<div class="energy-wave" id="ewave1"></div>
+<div class="energy-wave delay1" id="ewave2"></div>
+<div class="energy-wave delay2" id="ewave3"></div>
+</div>
+<div class="modal-body" id="modal-body">
+<!-- filled by JS -->
+</div>
+</div>
+</div>
+<!-- ══════════════════════════════ DISCOUNT BANNER
+══════════════════════════════ -->
+<div class="discount-banner">
+🚀 Launch Offer — All prices below already include 20% OFF <span>|</span> Fast delivery
+guaranteed</div>
+<!-- ══════════════════════════════ NAV
+══════════════════════════════ -->
+<nav>
+<a href="#home" class="logo">
+<img src="logo.png" alt="VECTUZ"/>
+<span class="logo-text">VECT<span>UZ</span></span>
+</a>
+<ul class="nav-links">
+<li><a href="#services">Services</a></li>
+<li><a href="#why">Why Us</a></li>
+<li><a href="#pricing">Pricing</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#resources">Resources</a></li>
+<li><a href="#contact" class="nav-cta">Get Started</a></li>
+<li><a href="auth.html">Client Login</a></li>
+<li>
+<a href="mailto:vectuz9@gmail.com" class="nav-email-btn" title="Email Us">✉</a>
+</li>
+<li>
+<button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+<span class="toggle-icon">🌙</span>
+</button>
+</li>
+</ul>
+</nav>
+<!-- ══════════════════════════════ HERO
+══════════════════════════════ -->
+<section class="hero" id="home">
+<div class="hero-circuit" aria-hidden="true">
+<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" focusable="false">
+<path class="circuit-line circuit-line--a" d="M-50,560 C150,480 250,620 420,520 S680,360
+820,440 S1050,560 1250,460"/>
+<path class="circuit-line circuit-line--b" d="M-50,220 C180,300 320,140 520,220 S780,360
+920,260 S1150,160 1250,240"/>
+<path class="circuit-trace" d="M880,80 L880,160 L960,160 L960,260 L1040,260 L1040,400"/>
+<circle class="circuit-node" cx="420" cy="520" r="5"/>
+<circle class="circuit-node" cx="820" cy="440" r="4"/>
+<circle class="circuit-node" cx="520" cy="220" r="4"/>
+<circle class="circuit-node" cx="920" cy="260" r="5"/>
+<circle class="circuit-pad" cx="880" cy="160" r="3"/>
+<circle class="circuit-pad" cx="960" cy="260" r="3"/>
+</svg></div>
+<div class="hero-grid" aria-hidden="true">
+<div class="hero-grid-inner">
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+</div>
+<div class="hero-glow"></div>
+</div>
+<div class="hero-tag">Web Design Kenya</div>
+<h1>Your Business.<br/><em>Digital</em><br/><span class="accent">Reality.</span></h1>
+<p class="hero-sub">Custom websites, e-commerce &amp; secure checkout — built fast for
+Kenyan SMEs that mean business.</p>
+<div class="hero-actions">
+<a href="#contact" class="btn-primary">Start Your Project →</a>
+<a href="#services" class="btn-outline">See Services</a>
+</div>
+<div class="hero-device-wrap">
+<div class="hero-device-glow"></div>
+<div class="hero-device ios-press" id="hero-device">
+<div class="hero-device-screen">
+<!-- Record a 10-15s phone screen capture of yourself scrolling
+vectuz.xyz, save as hero-demo.mp4, upload to your assets/ folder.
+Until then this will just show the poster image / blank video area,
+it will NOT break the page. -->
+<video autoplay muted loop playsinline poster="assets/hero-demo-poster.jpg">
+<source src="assets/hero-demo.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+</div>
+<p class="hero-device-caption">See it live — scroll in action</p>
+</section>
+<!-- ══════════════════════════════ STATS BAR
+══════════════════════════════ -->
+<div class="stats-bar">
+<div class="stat">
+<div class="stat-num" data-target="5" data-suffix="d">5d</div>
+<div class="stat-label">Fastest Delivery</div>
+</div>
+<div class="stat">
+<div class="stat-num" data-target="20" data-suffix="%">20%</div>
+<div class="stat-label">Launch Discount Applied</div>
+</div>
+<div class="stat">
+<div class="stat-num" data-target="100" data-suffix="%">100%</div>
+<div class="stat-label">Custom Design</div>
+</div>
+<div class="stat">
+<div class="stat-num">󰏧</div>
+<div class="stat-label">Specializing in Kenyan SMEs</div>
+</div>
+</div>
+<!-- ══════════════════════════════ SERVICES
+══════════════════════════════ -->
+<section class="services" id="services">
+<div class="services-header">
+<div>
+<div class="section-tag">What We Build</div>
+<h2 class="section-title">Services Built for<br/><em>Kenyan Business</em></h2>
+</div>
+<p class="services-intro">Everything your SME needs to show up online — professionally,
+fast, and affordably.</p>
+</div>
+<div class="feature-grid">
+<div class="feature-card ios-reveal">
+<div class="feature-icon-circle">🖥</div>
+<h3>Custom Web Design</h3>
+<p>Handcrafted websites that reflect your brand identity. No templates — every pixel
+tailored to your business.</p>
+<div class="service-price">Starting from KES 24,599</div>
+</div>
+<div class="feature-card ios-reveal">
+<div class="feature-icon-circle">🛒</div>
+<h3>E-Commerce Stores</h3>
+<p>Sell online with product catalogues, inventory management, and a smooth buying
+experience for your customers.</p>
+<div class="service-price">Starting from KES 74,999</div>
+</div>
+<div class="feature-card ios-reveal">
+<div class="feature-icon-circle">🔒</div>
+<h3>Secure Checkout</h3>
+<p>M-Pesa, card, and mobile money integrations. Your customers pay safely — you get
+paid on time.</p>
+<div class="service-price">Included with E-Commerce</div>
+</div>
+<div class="feature-card ios-reveal">
+<div class="feature-icon-circle">📱</div>
+<h3>Mobile-First Design</h3>
+<p>Built for Kenyan users on mobile. Fast loading, touch-friendly, and beautiful on any
+screen size.</p>
+<div class="service-price">Included in all packages</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ WHY VECTUZ
+══════════════════════════════ -->
+<section class="why" id="why">
+<div class="section-tag">Why VECTUZ</div>
+<div class="why-grid">
+<div class="why-text">
+<h2 class="section-title">We Turn Ideas Into<br/><em>Digital Reality</em></h2>
+<p>Most agencies take weeks and charge a premium. We move at startup speed without
+cutting corners — because your business can't wait.</p>
+<div class="why-points">
+<div class="why-point">
+<div class="why-point-icon">⚡</div>
+<div class="why-point-text">
+<strong>Speed That Impresses</strong>
+<span>We've delivered full websites in as little as 7 business days. Fast delivery is our
+standard, not the exception.</span>
+</div>
+</div>
+<div class="why-point">
+<div class="why-point-icon">󰏧</div>
+<div class="why-point-text">
+<strong>Kenya-Focused</strong>
+<span>We understand local business needs — M-Pesa integration, Kenyan SME
+pricing, and your market.</span>
+</div>
+</div>
+<div class="why-point">
+<div class="why-point-icon">🎯</div>
+<div class="why-point-text">
+<strong>No Cookie-Cutter Sites</strong>
+<span>Every site is unique. We design from scratch to make your business stand out
+online.</span>
+</div>
+</div>
+<div class="why-point">
+<div class="why-point-icon">💬</div>
+<div class="why-point-text">
+<strong>Ongoing Support</strong>
+<span>We don't disappear after launch. Maintenance, updates, and changes — we're a
+message away.</span>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<!-- ══════════════════════════════ PORTFOLIO
+══════════════════════════════ -->
+<section class="portfolio" id="portfolio">
+<div class="section-tag">Our Work</div>
+<h2 class="section-title">See It On<br/><em>Real Devices</em></h2>
+<p class="portfolio-intro">A look at how our designs feel on mobile — fast, clean, and built to
+convert.</p>
+<div class="portfolio-layout">
+<div class="portfolio-phone-mockup">
+<div class="portfolio-phone-screen">
+<!-- Original, license-free animated mock-up — not a real client site -->
+<div class="mini-site" aria-hidden="true">
+<div class="mini-site-bar">
+<span class="mini-dot red"></span><span class="mini-dot gold"></span><span class="mini-dot
+green"></span>
+</div>
+<div class="mini-site-scroll">
+<div class="mini-site-hero">
+<div class="mini-line mini-line-tag"></div>
+<div class="mini-line mini-line-h1"></div>
+<div class="mini-line mini-line-h1 short"></div>
+<div class="mini-line mini-line-sub"></div>
+<div class="mini-btn"></div>
+</div>
+<div class="mini-site-cards">
+<div class="mini-card"></div>
+<div class="mini-card"></div>
+<div class="mini-card"></div>
+</div>
+<div class="mini-site-banner"></div>
+<div class="mini-site-cards">
+<div class="mini-card"></div>
+<div class="mini-card"></div>
+</div>
+<div class="mini-site-footer"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-carousel">
+<div class="portfolio-track" id="portfolio-track"><!-- slides injected by JS, duplicated for seamless loop -->
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ TESTIMONIALS
+══════════════════════════════ -->
+<section class="testimonials" id="testimonials">
+<div class="section-tag">What Clients Say</div>
+<h2 class="section-title">Trusted By<br/><em>Kenyan Businesses</em></h2>
+<!-- Placeholder quotes — swap these for real client testimonials when you have them -->
+<div class="testimonials-grid">
+<div class="testimonial-card">
+<div class="testimonial-quote">"</div>
+<p class="testimonial-text">Our online store went live in under two weeks and the M-Pesa
+checkout has made it so easy for customers to pay. Sales have genuinely picked up since
+launch.</p>
+<div class="testimonial-author">
+<div class="testimonial-name">Amina K.</div>
+<div class="testimonial-role">Boutique Owner, Nairobi</div>
+</div>
+</div>
+<div class="testimonial-card">
+<div class="testimonial-quote">"</div>
+<p class="testimonial-text">I was nervous about the cost, but the Starter package gave us
+exactly what we needed — a clean, fast site that actually represents our brand.</p>
+<div class="testimonial-author">
+<div class="testimonial-name">Brian O.</div>
+<div class="testimonial-role">Founder, Logistics Startup</div>
+</div>
+</div>
+<div class="testimonial-card">
+<div class="testimonial-quote">"</div>
+<p class="testimonial-text">They actually listen. We asked for changes mid-project and they
+handled it without drama. Support after launch has been solid too.</p>
+<div class="testimonial-author">
+<div class="testimonial-name">Grace W.</div>
+<div class="testimonial-role">Salon Owner, Mombasa Road</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ PROCESS
+══════════════════════════════ -->
+<section class="process" id="process">
+<div class="section-tag">How It Works</div>
+<h2 class="section-title">From Idea to<br/><em>Live Website</em></h2>
+<div class="process-steps">
+<div class="process-step">
+<div class="process-num">01</div>
+<div class="process-step-title">Discovery Call</div>
+<p class="process-step-desc">We learn your business, goals, and what you need the
+website to do for you.</p>
+</div>
+<div class="process-step">
+<div class="process-num">02</div>
+<div class="process-step-title">Design &amp; Build</div>
+<p class="process-step-desc">We design and develop your site — fast. You'll see progress
+within 72 hours.</p>
+</div>
+<div class="process-step">
+<div class="process-num">03</div>
+<div class="process-step-title">Review &amp; Revise</div>
+<p class="process-step-desc">You review, request changes, and we refine until every detail
+is right as you want it, no compromise.</p>
+</div>
+<div class="process-step">
+<div class="process-num">04</div>
+<div class="process-step-title">Launch 🚀</div>
+<p class="process-step-desc">Your site goes live on your domain. We handle the technical
+handover.</p>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ PRICING
+══════════════════════════════ -->
+<section class="pricing" id="pricing">
+<div class="section-tag">Transparent Pricing</div>
+<h2 class="section-title">Simple Packages for<br/><em>Every Budget</em></h2>
+<div class="pricing-grid">
+<div class="pricing-card tier-starter" data-package="starter">
+<div class="plan-name">Starter</div>
+<div class="plan-price"><sup>KES </sup>24,599</div>
+<span class="plan-price-note">20% discount applied</span>
+<p class="plan-desc">Perfect for businesses that need a clean, professional online
+presence.</p>
+<ul class="plan-features">
+<li>Up to 5 pages</li>
+<li>Mobile-responsive design</li>
+<li>Contact form</li>
+<li>Social media links</li>
+<li>Google Maps integration</li>
+<li>5-day delivery</li>
+<li>M -pesa intergration</li>
+<li>Free domain hosting for 1 year</li>
+</ul>
+<button class="plan-cta learn-more-btn" data-package="starter">Learn More</button>
+</div>
+<div class="pricing-card tier-business" data-package="business">
+<div class="plan-name">Business</div>
+<div class="plan-price"><sup>KES </sup>74,999</div>
+<span class="plan-price-note">20% discount applied</span>
+<p class="plan-desc">Full-featured website with e-commerce and payment integrations.</p>
+<ul class="plan-features">
+<li>Up to 15 pages</li>
+<li>E-commerce / online store</li>
+<li>M-Pesa &amp; card checkout</li>
+<li>Custom animations</li>
+<li>WhatsApp chat button</li>
+<li>Delivery timeline based on project scope</li>
+<li>1 month free support</li>
+</ul>
+<button class="plan-cta learn-more-btn" data-package="business">Learn More</button>
+</div>
+<div class="pricing-card tier-premium" data-package="premium">
+<div class="plan-name">Premium</div>
+<div class="plan-price"><sup>KES </sup>120,000</div>
+<span class="plan-price-note">20% discount applied</span>
+<p class="plan-desc">Enterprise-level builds with full custom functionality and
+integrations.</p>
+<ul class="plan-features">
+<li>Unlimited pages</li>
+<li>Full custom design system</li>
+<li>Booking / inventory systems</li>
+<li>Admin dashboard</li>
+<li>API integrations</li>
+<li>3 months support</li>
+<li>Priority delivery</li>
+</ul><button class="plan-cta learn-more-btn" data-package="premium">Learn More</button>
+</div>
+<div class="pricing-card tier-max" data-package="max">
+<div class="plan-name">MAX</div>
+<div class="plan-price"><sup>KES </sup>200k–600k</div>
+<span class="plan-price-note">20% discount applied</span>
+<p class="plan-desc">Full digital transformation — a complete business system built to
+scale.</p>
+<ul class="plan-features">
+<li>Custom web application</li>
+<li>Android + iOS mobile app</li>
+<li>M-Pesa Daraja API integration</li>
+<li>Custom admin dashboard</li>
+<li>Inventory &amp; CRM system</li>
+<li>6 months dedicated support</li>
+</ul>
+<button class="plan-cta learn-more-btn" data-package="max">Learn More</button>
+</div>
+<div class="pricing-card tier-review" data-package="review">
+<div class="plan-name">Web Review</div>
+<div class="plan-price"><sup>KES </sup>0</div>
+<span class="plan-price-note">100% Free, No Obligation</span>
+<p class="plan-desc">Already online? Get an honest expert look at what's working — and
+what's costing you customers.</p>
+<ul class="plan-features">
+<li>Full walkthrough of your current site</li>
+<li>Mock-up of suggested improvements</li>
+<li>Clear list of what to fix first</li>
+<li>Zero pressure to buy anything</li>
+</ul>
+<button class="plan-cta learn-more-btn" data-package="review">Get Free Review</button>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ FAQ
+══════════════════════════════ -->
+<section class="faq" id="faq">
+<div class="section-tag">Questions</div>
+<h2 class="section-title">Frequently Asked<br/><em>Questions</em></h2>
+<div class="faq-list">
+<div class="faq-item">
+<button class="faq-question" type="button">
+<span>How fast can you actually deliver my website?</span><span class="faq-toggle">+</span>
+</button>
+<div class="faq-answer">
+<p>Our Starter package is delivered in as little as 5 business days once your deposit and
+content are received. Business, Premium, and MAX timelines depend on scope and are
+confirmed in writing before we start.</p>
+</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" type="button">
+<span>Do I have to pay the full amount upfront?</span>
+<span class="faq-toggle">+</span>
+</button>
+<div class="faq-answer">
+<p>No. We work on a 50/50 structure — half to begin the project, half on completion before final
+handover.</p>
+</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" type="button">
+<span>What if I don't like the first design?</span>
+<span class="faq-toggle">+</span>
+</button>
+<div class="faq-answer">
+<p>Every package includes up to 3 rounds of revisions, so we refine the design together until
+it's right.</p>
+</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" type="button">
+<span>Can my customers pay with M-Pesa?</span>
+<span class="faq-toggle">+</span>
+</button>
+<div class="faq-answer">
+<p>Yes. Our Business package and above include M-Pesa, card, and mobile money checkout,
+so customers can pay you directly and safely.</p>
+</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" type="button">
+<span>I already have a website — can you still help?</span>
+<span class="faq-toggle">+</span>
+</button>
+<div class="faq-answer"><p>Yes — grab our free Web Review. We'll look at your current site and send you a mock-up of
+improvements and the specific areas costing you customers, at no charge.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ RESOURCES / TRUST
+══════════════════════════════ -->
+<section class="services" id="resources">
+<div class="services-header">
+<div>
+<div class="section-tag">Resources</div>
+<h2 class="section-title">Helpful Guides &amp;<br/><em>Documentation</em></h2>
+</div>
+<p class="services-intro">A few things we've put together to help you understand the
+process, pricing, and what to expect when working with us.</p>
+</div>
+<div class="services-grid">
+<div class="service-card">
+<span class="service-icon">📋</span>
+<div class="service-title">Our Process Explained</div>
+<p class="service-desc">A breakdown of every stage from discovery call to launch, so you
+always know what's happening and when.</p>
+</div>
+<div class="service-card">
+<span class="service-icon">💳</span>
+<div class="service-title">Payment &amp; Deposit Guide</div>
+<p class="service-desc">How our 50/50 deposit structure works, accepted payment
+methods, and what happens at each milestone.</p>
+</div>
+<div class="service-card">
+<span class="service-icon">🛠</span>
+<div class="service-title">Post-Launch Support</div>
+<p class="service-desc">What's covered under your free support period, how to request
+changes, and response times.</p>
+</div>
+<div class="service-card">
+<span class="service-icon">📄</span>
+<div class="service-title">Terms &amp; Conditions</div>
+<p class="service-desc">Full details on revisions, delivery timelines, intellectual property,
+and data privacy. <a href="#terms" id="open-terms-banner"
+style="color:var(--green);font-weight:600;">Read the full terms →</a></p>
+</div></div>
+</section>
+<!-- ══════════════════════════════ CONTACT
+══════════════════════════════ -->
+<section class="contact" id="contact">
+<div class="contact-inner">
+<div class="section-tag">Let's Work Together</div>
+<h2 class="section-title">Start Your Project<br/><em>Today</em></h2>
+<p>Tell us about your business and we'll get back to you within a few hours.</p>
+<form class="contact-form" id="contact-form">
+<div class="form-row">
+<div class="form-field">
+<label for="name">Your Name</label>
+<input id="name" name="name" type="text" placeholder="YOUR NAME" required/>
+</div>
+<div class="form-field">
+<label for="phone">Phone / WhatsApp</label>
+<input id="phone" name="phone" type="tel" placeholder="+254 7XX XXX XXX" required/>
+</div>
+</div>
+<div class="form-field">
+<label for="business">Business Name</label>
+<input id="business" name="business" type="text" placeholder="My Business Ltd"/>
+</div>
+<div class="form-field">
+<label for="package">Service Needed</label>
+<select id="package" name="package">
+<option value="">Select a package</option>
+<option>Starter — KES 24,599</option>
+<option>Business — KES 74,999</option>
+<option>Premium — KES 120,000</option>
+<option>MAX — KES 200k–600k</option>
+<option>Web Review — Free</option>
+<option>Not sure yet</option>
+</select>
+</div>
+<div class="form-field">
+<label for="message">Tell us about your project</label>
+<textarea id="message" name="message" rows="4" placeholder="Briefly describe your
+business project and what you need…"></textarea>
+</div>
+<button type="submit" class="form-submit">Send Message →</button>
+</form><p class="data-policy">🔒 <strong>We do not sell your data to third parties.
+Period.</strong></p>
+<p class="whatsapp-alt">
+Prefer to chat? <a href="https://wa.me/254783944907" target="_blank"
+rel="noopener">Message us on WhatsApp →</a>
+&nbsp;|&nbsp; <a href="mailto:vectuz9@gmail.com">vectuz9@gmail.com</a>
+</p>
+</div>
+</section>
+<!-- ══════════════════════════════ PAYMENT TICKER
+══════════════════════════════ -->
+<div class="payment-ticker-wrap">
+<div class="payment-ticker-label">We Accept</div>
+<div class="payment-ticker">
+<div class="ticker-track" id="ticker-track">
+<!-- built by JS with logos + cube hover -->
+</div>
+</div>
+</div>
+<!-- ══════════════════════════════ PAYMENT SHOWCASE (animated sliding cards)
+══════════════════════════════ -->
+<section class="payment-showcase" id="payments">
+<div class="section-tag">Trusted Checkout</div>
+<h2 class="section-title">Pay However<br/><em>Suits You</em></h2>
+<p class="payment-showcase-intro">Every VECTUZ e-commerce build accepts the payment
+methods Kenyan customers already trust.</p>
+<div class="payment-showcase-track" id="payment-showcase-track">
+<div class="payment-gateway-card ios-press">
+<div class="payment-gateway-icon">📲</div>
+<div class="payment-gateway-name">M-Pesa STK Push</div>
+<div class="payment-gateway-desc">Instant prompt straight to the customer's phone.</div>
+</div>
+<div class="payment-gateway-card ios-press">
+<div class="payment-gateway-icon">💳</div>
+<div class="payment-gateway-name">Visa / Mastercard</div>
+<div class="payment-gateway-desc">Card checkout for local and international
+customers.</div>
+</div>
+<div class="payment-gateway-card ios-press">
+<div class="payment-gateway-icon">🏦</div>
+<div class="payment-gateway-name">Bank Transfer</div>
+<div class="payment-gateway-desc">KCB, Equity, DTB &amp; Standard Chartered
+supported.</div>
+</div>
+<div class="payment-gateway-card ios-press">
+<div class="payment-gateway-icon">📱</div>
+<div class="payment-gateway-name">Airtel Money</div>
+<div class="payment-gateway-desc">Reach customers outside the Safaricom network
+too.</div>
+</div>
+<div class="payment-gateway-card ios-press">
+<div class="payment-gateway-icon">🔁</div>
+<div class="payment-gateway-name">Recurring Billing</div>
+<div class="payment-gateway-desc">For subscriptions and tiered access packages.</div>
+</div>
+</div>
+</section>
+<!-- ══════════════════════════════ FOOTER
+══════════════════════════════ -->
+<footer>
+<div>
+<div class="footer-brand">VECT<span>UZ</span></div>
+<div class="footer-tagline">Turning business ideas into digital reality — Nairobi, Kenya</div>
+</div>
+<div class="footer-links">
+<a href="#services">Services</a>
+<a href="#pricing">Pricing</a>
+<a href="#faq">FAQ</a>
+<a href="#resources">Resources</a>
+<a href="#contact">Contact</a>
+<a href="#terms" id="open-terms">Terms &amp; Conditions</a>
+<a href="https://www.instagram.com/vectuz_" target="_blank" rel="noopener">Instagram</a>
+</div>
+<p class="footer-copy">© 2026 VECTUZ. All rights reserved. &nbsp;|&nbsp; <span
+class="footer-data-note">🔒 We never sell your data.</span></p>
+</footer>
+<!-- ══════════════════════════════ TERMS MODAL
+══════════════════════════════ -->
+<div id="terms-modal" class="terms-modal"><div class="terms-backdrop"></div>
+<div class="terms-content">
+<button class="terms-close" id="terms-close">✕</button>
+<h2>Terms &amp; Conditions</h2>
+<p class="terms-date">Effective: January 2026 | VECTUZ Web Design, Nairobi, Kenya</p>
+<h3>1. Services</h3>
+<p>VECTUZ agrees to design and deliver websites as outlined in the agreed package.
+Deliverables, timelines, and scope will be confirmed in writing before work begins.</p>
+<h3>2. Payment</h3>
+<p>A 50% deposit is required before work commences. The remaining 50% is due upon
+project completion before the final site is handed over or deployed. We accept M-Pesa, Airtel
+Money, KCB, Equity Bank, DTB, and Standard Chartered Bank transfers.</p>
+<h3>3. Revisions</h3>
+<p>Each package includes up to <strong>3 rounds of revisions</strong>. Additional revisions
+beyond this are billed at KES 2,500 per round.</p>
+<h3>4. Delivery Timeline</h3>
+<p>Timelines begin from the date the deposit is received and all required content (text,
+images, branding) is provided by the client. Delays caused by missing client materials will
+extend the delivery date accordingly.</p>
+<h3>5. Package-Specific Delivery</h3>
+<p>The 5 business day delivery timeline applies to the Starter package only. Delivery
+timelines for the Business, Premium, and MAX packages are determined individually based on
+the scope, complexity, and feature requirements of the client's project, and will be confirmed in
+writing before work begins.</p>
+<h3>6. Client Responsibilities</h3>
+<p>The client is responsible for providing accurate business information, branding assets,
+and content required for the project. VECTUZ is not liable for errors arising from incorrect
+client-supplied information.</p>
+<h3>7. Intellectual Property</h3>
+<p>Upon full payment, the client owns the final website. VECTUZ retains the right to display
+the work in our portfolio unless the client explicitly requests otherwise in writing.</p>
+<h3>8. Refunds</h3>
+<p>Deposits are non-refundable once work has commenced. .</p>
+<h3>9. Support &amp; Maintenance</h3>
+<p>Post-launch support is included as specified per package. Support covers bug fixes and
+minor updates. New features or redesigns are treated as separate projects.</p>
+<h3>10. Pricing &amp; Discounts</h3>
+<p>All advertised package prices already include the current 20% launch discount. No further
+discount is applied at checkout unless separately agreed in writing.</p>
+<h3>11. Data &amp; Privacy</h3>
+<p><strong>VECTUZ does not sell, share, or disclose client data to any third party.
+PERIOD.</strong> All information submitted through our website is used solely to respond to
+your enquiry.</p>
+<h3>12. Governing Law</h3><p>These terms are governed by the laws of the Republic of Kenya. Any disputes shall be
+resolved through mutual negotiation before any formal proceedings.</p>
+<a href="#contact" class="terms-cta" id="terms-cta-btn">Get Started →</a>
+</div>
+</div>
+<!-- ══════════════════════════════ STICKY WHATSAPP
+══════════════════════════════ -->
+<a href="https://wa.me/254783944907" target="_blank" rel="noopener" class="whatsapp-float"
+aria-label="Chat with us on WhatsApp">
+<span class="whatsapp-float-ring"></span>
+<span class="whatsapp-float-icon">💬</span>
+</a>
+<script src="bank-logos-1.js"></script>
+<script src="bank-logos-2.js"></script>
+<script src="payment-methods.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="main.js"></script>
+<script src="vectuz-upgrade.js"></script>
 </body>
 </html>
