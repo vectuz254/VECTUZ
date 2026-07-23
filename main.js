@@ -493,11 +493,6 @@ ctaBtn.addEventListener('click', function (e) {
 e.preventDefault();
 closeModal();
 var contact = document.getElementById('contact');
-if (ctaBtn) {
-ctaBtn.addEventListener('click', function (e) {
-e.preventDefault();
-closeModal();
-var contact = document.getElementById('contact');
 if (contact) window.scrollTo({ top: contact.offsetTop - 90, behavior: 'smooth' });
 });
 }
