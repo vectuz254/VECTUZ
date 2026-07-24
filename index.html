@@ -20,12 +20,12 @@ no connection). Without this, every hidden overlay's text — "You're Offline",
 visible text, exactly like the screenshot. Values match style.css exactly,
 so once style.css loads it takes over with no visual change. -->
 <style>
-.offline-overlay,.form-success-overlay,.package-modal,.terms-modal{
-position:fixed;inset:0;opacity:0;visibility:hidden;pointer-events:none}
-.offline-overlay.show,.form-success-overlay.show,.package-modal.show,.terms-modal.show{
-opacity:1;visibility:visible;pointer-events:auto}
-#loader{position:fixed;inset:0;background:#090b0e;display:flex;
-align-items:center;justify-content:center;z-index:9999}
+  .offline-overlay,.form-success-overlay,.package-modal,.terms-modal{
+  position:fixed;inset:0;opacity:0;visibility:hidden;pointer-events:none}
+  .offline-overlay.show,.form-success-overlay.show,.package-modal.show,.terms-modal.show{
+  opacity:1;visibility:visible;pointer-events:auto}
+  #loader{position:fixed;inset:0;background:#090b0e;display:flex;
+  align-items:center;justify-content:center;z-index:9999}
 </style>
 </head>
 <body>
@@ -69,9 +69,6 @@ connection.</p>
 <button class="modal-close" id="modal-close">✕</button>
 <div class="modal-cube-scene" id="modal-cube-scene">
 <div class="modal-cube" id="modal-cube"></div>
-<div class="energy-wave" id="ewave1"></div>
-<div class="energy-wave delay1" id="ewave2"></div>
-<div class="energy-wave delay2" id="ewave3"></div>
 </div>
 <div class="modal-body" id="modal-body">
 <!-- filled by JS -->
@@ -81,8 +78,8 @@ connection.</p>
 <!-- ══════════════════════════════ DISCOUNT BANNER
 ══════════════════════════════ -->
 <div class="discount-banner">
-🚀 Launch Offer — All prices below already include 20% OFF <span>|</span> Fast delivery
-guaranteed</div>
+🚀 Launch Pricing — Fixed Rates for New Clients This Month <span>|</span> Fast Delivery
+Guaranteed</div>
 <!-- ══════════════════════════════ NAV
 ══════════════════════════════ -->
 <nav>
@@ -150,11 +147,12 @@ Kenyan SMEs that mean business.</p>
 <div class="hero-device-glow"></div>
 <div class="hero-device ios-press" id="hero-device">
 <div class="hero-device-screen">
-<!-- Record a 10-15s phone screen capture of yourself scrolling
-vectuz.xyz, save as hero-demo.mp4, upload to your assets/ folder.
-Until then this will just show the poster image / blank video area,
-it will NOT break the page. -->
-<video autoplay muted loop playsinline poster="assets/hero-demo-poster.jpg">
+<!-- A live CSS "someone scrolling the site" preview is injected here by
+main.js (initHeroDevice) so the hero always looks alive. If you record
+a real 10-15s phone screen capture of vectuz.xyz and save it as
+assets/hero-demo.mp4, it will automatically play on top and take over
+once it loads — no code changes needed. -->
+<video muted loop playsinline poster="assets/hero-demo-poster.jpg">
 <source src="assets/hero-demo.mp4" type="video/mp4">
 </video>
 </div>
@@ -170,15 +168,15 @@ it will NOT break the page. -->
 <div class="stat-label">Fastest Delivery</div>
 </div>
 <div class="stat">
-<div class="stat-num" data-target="20" data-suffix="%">20%</div>
-<div class="stat-label">Launch Discount Applied</div>
-</div>
-<div class="stat">
 <div class="stat-num" data-target="100" data-suffix="%">100%</div>
 <div class="stat-label">Custom Design</div>
 </div>
 <div class="stat">
-<div class="stat-num">󰏧</div>
+<div class="stat-num" data-target="3" data-suffix="">3</div>
+<div class="stat-label">Revision Rounds Included</div>
+</div>
+<div class="stat">
+<div class="stat-num">🇰🇪</div>
 <div class="stat-label">Specializing in Kenyan SMEs</div>
 </div>
 </div>
@@ -199,14 +197,14 @@ fast, and affordably.</p>
 <h3>Custom Web Design</h3>
 <p>Handcrafted websites that reflect your brand identity. No templates — every pixel
 tailored to your business.</p>
-<div class="service-price">Starting from KES 24,599</div>
+<div class="service-price">Starting from KES 19,999</div>
 </div>
 <div class="feature-card ios-reveal">
 <div class="feature-icon-circle">🛒</div>
 <h3>E-Commerce Stores</h3>
 <p>Sell online with product catalogues, inventory management, and a smooth buying
 experience for your customers.</p>
-<div class="service-price">Starting from KES 74,999</div>
+<div class="service-price">Starting from KES 59,999</div>
 </div>
 <div class="feature-card ios-reveal">
 <div class="feature-icon-circle">🔒</div>
@@ -238,12 +236,12 @@ cutting corners — because your business can't wait.</p>
 <div class="why-point-icon">⚡</div>
 <div class="why-point-text">
 <strong>Speed That Impresses</strong>
-<span>We've delivered full websites in as little as 7 business days. Fast delivery is our
+<span>We've delivered full websites in as little as 5 business days. Fast delivery is our
 standard, not the exception.</span>
 </div>
 </div>
 <div class="why-point">
-<div class="why-point-icon">󰏧</div>
+<div class="why-point-icon">🇰🇪</div>
 <div class="why-point-text">
 <strong>Kenya-Focused</strong>
 <span>We understand local business needs — M-Pesa integration, Kenyan SME
@@ -391,26 +389,25 @@ handover.</p>
 <div class="pricing-grid">
 <div class="pricing-card tier-starter" data-package="starter">
 <div class="plan-name">Starter</div>
-<div class="plan-price"><sup>KES </sup>24,599</div>
-<span class="plan-price-note">20% discount applied</span>
+<div class="plan-price"><sup>KES </sup>19,999</div>
+<span class="plan-price-note">Launch pricing</span>
 <p class="plan-desc">Perfect for businesses that need a clean, professional online
 presence.</p>
 <ul class="plan-features">
-<li>Up to 5 pages</li>
+<li>Up to 3 pages</li>
 <li>Mobile-responsive design</li>
 <li>Contact form</li>
 <li>Social media links</li>
 <li>Google Maps integration</li>
-<li>5-day delivery</li>
-<li>M -pesa intergration</li>
 <li>Free domain hosting for 1 year</li>
+<li>5-day delivery</li>
 </ul>
 <button class="plan-cta learn-more-btn" data-package="starter">Learn More</button>
 </div>
 <div class="pricing-card tier-business" data-package="business">
 <div class="plan-name">Business</div>
-<div class="plan-price"><sup>KES </sup>74,999</div>
-<span class="plan-price-note">20% discount applied</span>
+<div class="plan-price"><sup>KES </sup>59,999</div>
+<span class="plan-price-note">Launch pricing</span>
 <p class="plan-desc">Full-featured website with e-commerce and payment integrations.</p>
 <ul class="plan-features">
 <li>Up to 15 pages</li>
@@ -425,8 +422,8 @@ presence.</p>
 </div>
 <div class="pricing-card tier-premium" data-package="premium">
 <div class="plan-name">Premium</div>
-<div class="plan-price"><sup>KES </sup>120,000</div>
-<span class="plan-price-note">20% discount applied</span>
+<div class="plan-price"><sup>KES </sup>99,999</div>
+<span class="plan-price-note">Launch pricing</span>
 <p class="plan-desc">Enterprise-level builds with full custom functionality and
 integrations.</p>
 <ul class="plan-features">
@@ -441,8 +438,8 @@ integrations.</p>
 </div>
 <div class="pricing-card tier-max" data-package="max">
 <div class="plan-name">MAX</div>
-<div class="plan-price"><sup>KES </sup>200k–600k</div>
-<span class="plan-price-note">20% discount applied</span>
+<div class="plan-price"><sup>KES </sup>150k–400k</div>
+<span class="plan-price-note">Launch pricing</span>
 <p class="plan-desc">Full digital transformation — a complete business system built to
 scale.</p>
 <ul class="plan-features">
@@ -592,10 +589,10 @@ style="color:var(--green);font-weight:600;">Read the full terms →</a></p>
 <label for="package">Service Needed</label>
 <select id="package" name="package">
 <option value="">Select a package</option>
-<option>Starter — KES 24,599</option>
-<option>Business — KES 74,999</option>
-<option>Premium — KES 120,000</option>
-<option>MAX — KES 200k–600k</option>
+<option>Starter — KES 19,999</option>
+<option>Business — KES 59,999</option>
+<option>Premium — KES 99,999</option>
+<option>MAX — KES 150k–400k</option>
 <option>Web Review — Free</option>
 <option>Not sure yet</option>
 </select>
@@ -716,13 +713,13 @@ client-supplied information.</p>
 <p>Upon full payment, the client owns the final website. VECTUZ retains the right to display
 the work in our portfolio unless the client explicitly requests otherwise in writing.</p>
 <h3>8. Refunds</h3>
-<p>Deposits are non-refundable once work has commenced. .</p>
+<p>Deposits are non-refundable once work has commenced.</p>
 <h3>9. Support &amp; Maintenance</h3>
 <p>Post-launch support is included as specified per package. Support covers bug fixes and
 minor updates. New features or redesigns are treated as separate projects.</p>
-<h3>10. Pricing &amp; Discounts</h3>
-<p>All advertised package prices already include the current 20% launch discount. No further
-discount is applied at checkout unless separately agreed in writing.</p>
+<h3>10. Pricing</h3>
+<p>All advertised package prices are current launch pricing and may change for future
+projects. Your price is locked in once a deposit is received and confirmed in writing.</p>
 <h3>11. Data &amp; Privacy</h3>
 <p><strong>VECTUZ does not sell, share, or disclose client data to any third party.
 PERIOD.</strong> All information submitted through our website is used solely to respond to
@@ -739,11 +736,7 @@ aria-label="Chat with us on WhatsApp">
 <span class="whatsapp-float-ring"></span>
 <span class="whatsapp-float-icon">💬</span>
 </a>
-<script src="bank-logos-1.js"></script>
-<script src="bank-logos-2.js"></script>
 <script src="payment-methods.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="main.js"></script>
-<script src="vectuz-upgrade.js"></script>
 </body>
 </html>
