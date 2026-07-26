@@ -1,0 +1,167 @@
+0<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Client Login | VECTUZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="vectuz-upgrade.css"/>
+<style>
+  .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+  .auth-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--border);
+    border-radius:20px;padding:2.5rem;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+  .auth-tabs{display:flex;gap:.5rem;margin-bottom:2rem;background:var(--dark);border-radius:10px;padding:.3rem}
+  .auth-tab{flex:1;text-align:center;padding:.65rem;border-radius:8px;font-weight:700;font-size:.85rem;
+    cursor:pointer;color:var(--muted);transition:all .35s var(--ease-ios)}
+  .auth-tab.active{background:var(--green);color:#090b0e}
+  .auth-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem}
+  .auth-field label{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .auth-field input{background:var(--dark);border:1px solid var(--border);color:var(--white);
+    font-family:var(--font-body);font-size:.95rem;padding:.85rem 1rem;border-radius:8px;outline:none;
+    transition:border-color .3s var(--ease-ios)}
+  .auth-field input:focus{border-color:var(--green)}
+  .auth-submit{width:100%;background:var(--green);color:#090b0e;font-family:var(--font-display);
+    font-weight:800;font-size:1rem;padding:1rem;border:none;border-radius:8px;cursor:pointer;margin-top:.5rem}
+  .auth-msg{margin-top:1rem;font-size:.85rem;text-align:center;min-height:1.2em}
+  .auth-msg.error{color:var(--red)}
+  .auth-msg.ok{color:var(--green)}
+  .auth-logo{text-align:center;margin-bottom:2rem;font-family:var(--font-display);font-weight:800;font-size:1.5rem}
+  .auth-logo span{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card ios-reveal in-view">
+    <div class="auth-logo">VECT<span>UZ</span> Client Portal</div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active ios-press" data-mode="login">Log In</div>
+      <div class="auth-tab ios-press" data-mode="signup">Create Account</div>
+    </div>
+
+    <form id="auth-form">
+      <div class="auth-field" id="name-field" style="display:none">
+        <label for="full_name">Full Name</label>
+        <input id="full_name" type="text" placeholder="Your name"/>
+      </div>
+      <div class="auth-field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@email.com" required/>
+      </div>
+      <div class="auth-field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" required minlength="6"/>
+      </div>
+      <button type="submit" class="auth-submit ios-press" id="auth-btn">Log In</button>
+      <p class="auth-msg" id="auth-msg"></p>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  onAuthStateChanged, updateProfile
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js'
+import {
+  getFirestore, doc, setDoc, serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'
+
+// ── FILL THESE IN from Firebase Console → Project Settings → General
+//    → Your apps → SDK setup and configuration ──
+// Import the functions you need from the SDKs you need
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBA09W9D5SmryHB30N3ptFt7xPLwhJ0Zyc",
+  authDomain: "vectuz-9ef0c.firebaseapp.com",
+  projectId: "vectuz-9ef0c",
+  storageBucket: "vectuz-9ef0c.firebasestorage.app",
+  messagingSenderId: "406482709380",
+  appId: "1:406482709380:web:e28fc2aae83bda62aa4bd1",
+  measurementId: "G-N4QL2N09DS"};
+
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+
+let mode = 'login'
+const tabs = document.querySelectorAll('.auth-tab')
+const nameField = document.getElementById('name-field')
+const btn = document.getElementById('auth-btn')
+const msg = document.getElementById('auth-msg')
+const form = document.getElementById('auth-form')
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'))
+    tab.classList.add('active')
+    mode = tab.dataset.mode
+    nameField.style.display = mode === 'signup' ? 'flex' : 'none'
+    btn.textContent = mode === 'signup' ? 'Create Account' : 'Log In'
+    msg.textContent = ''
+  })
+})
+
+// If already logged in, skip straight to the portal
+onAuthStateChanged(auth, (user) => {
+  if (user) window.location.href = 'portal.html'
+})
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const email = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value
+  msg.textContent = ''
+  msg.className = 'auth-msg'
+  btn.disabled = true
+  btn.textContent = 'Please wait…'
+
+  try {
+    if (mode === 'signup') {
+      const full_name = document.getElementById('full_name').value.trim()
+      const cred = await createUserWithEmailAndPassword(auth, email, password)
+      if (full_name) await updateProfile(cred.user, { displayName: full_name })
+
+      // Create the client's profile document in Firestore
+      await setDoc(doc(db, 'profiles', cred.user.uid), {
+        email,
+        full_name: full_name || '',
+        created_at: serverTimestamp()
+      })
+
+      window.location.href = 'portal.html'
+      return
+    } else {
+      await signInWithEmailAndPassword(auth, email, password)
+      window.location.href = 'portal.html'
+      return
+    }
+  } catch (err) {
+    msg.textContent = friendlyError(err.code) || err.message
+    msg.classList.add('error')
+  } finally {
+    btn.disabled = false
+    btn.textContent = mode === 'signup' ? 'Create Account' : 'Log In'
+  }
+})
+
+function friendlyError(code) {
+  const map = {
+    'auth/email-already-in-use': 'That email already has an account — try logging in instead.',
+    'auth/invalid-email': 'That email address looks invalid.',
+    'auth/weak-password': 'Password should be at least 6 characters.',
+    'auth/user-not-found': 'No account found with that email.',
+    'auth/wrong-password': 'Incorrect password.',
+    'auth/invalid-credential': 'Incorrect email or password.',
+  }
+  return map[code]
+}
+</script>
+</body>
+</html>
