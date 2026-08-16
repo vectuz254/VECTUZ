@@ -41,12 +41,12 @@ import {
 
 // -------- PASTE YOUR REAL CONFIG HERE (from Firebase console) --------
 const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME.firebaseapp.com",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME.appspot.com",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME"
+  apiKey: "AIzaSyBA09W9D5SmryHB30N3ptFt7xPLwhJ0Zyc",
+  authDomain: "vectuz-9ef0c.firebaseapp.com",
+  projectId: "vectuz-9ef0c",
+  storageBucket: "vectuz-9ef0c.firebasestorage.app",
+  messagingSenderId: "406482709380",
+  appId: "1:406482709380:web:b4588b410e202762aa4bd1"
 };
 // -----------------------------------------------------------------------
 
