@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Page not found — VECTUZ</title>
+<meta name="description" content="This page doesn't exist — head back to VECTUZ to see websites for Kenyan businesses, built fast.">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  (function(){
+    try{
+      var stored = window.localStorage.getItem('vectuz-theme');
+      var theme = stored || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    }catch(e){ document.documentElement.setAttribute('data-theme', 'dark'); }
+  })();
+</script>
+<style>
+  .notfound-wrap{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 20px;gap:18px;}
+  .notfound-code{font-family:"Playfair Display",serif;font-size:clamp(64px,22vw,140px);font-weight:800;line-height:1;letter-spacing:-0.02em;background:linear-gradient(135deg,var(--accent,#c77b2e),var(--text,#eee));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .notfound-title{font-size:clamp(20px,4.5vw,28px);font-weight:700;margin:0;}
+  .notfound-sub{max-width:44ch;opacity:.75;margin:0;}
+  .notfound-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+</style>
+</head>
+<body class="portal-body">
+  <div class="notfound-wrap">
+    <a href="index.html" class="brand" aria-label="VECTUZ home">
+      <span class="brand-cube" aria-hidden="true">
+        <span class="bc-r"><span></span><span></span><span></span><span></span></span>
+        <span class="bc-l"><span></span><span></span><span></span><span></span></span>
+        <span class="bc-t"><span></span><span></span><span></span><span></span></span>
+      </span>
+      <span class="brand-word">VECT<span class="accent-word">UZ</span></span>
+    </a>
+    <p class="notfound-code">404</p>
+    <h1 class="notfound-title">This page took a wrong turn.</h1>
+    <p class="notfound-sub">Whatever you were looking for isn't here — but our services, pricing, and contact details are one tap away.</p>
+    <div class="notfound-actions">
+      <a href="index.html" class="btn btn-primary ripple">Back to home</a>
+      <a href="index.html#contact" class="btn btn-ghost ripple">Start a project</a>
+    </div>
+  </div>
+</body>
+</html>
