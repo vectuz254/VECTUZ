@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Privacy Policy — VECTUZ</title>
+<meta name="description" content="How VECTUZ collects, uses, and protects information from visitors and clients.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  (function(){
+    try{
+      var stored = window.localStorage.getItem('vectuz-theme');
+      var theme = stored || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    }catch(e){ document.documentElement.setAttribute('data-theme', 'dark'); }
+  })();
+</script>
+<style>
+  .legal-wrap{max-width:70ch;margin:0 auto;padding:100px 20px 80px;}
+  .legal-wrap h1{font-family:"Playfair Display",serif;margin-bottom:.2em;}
+  .legal-wrap h2{margin-top:2em;font-size:1.15em;}
+  .legal-wrap p, .legal-wrap li{opacity:.85;line-height:1.6;}
+  .legal-updated{opacity:.6;font-size:.9em;}
+</style>
+</head>
+<body class="portal-body">
+  <header class="site-nav" style="position:static;">
+    <div class="nav-inner">
+      <a href="index.html" class="brand" aria-label="VECTUZ home">
+        <span class="brand-cube" aria-hidden="true">
+          <span class="bc-r"><span></span><span></span><span></span><span></span></span>
+          <span class="bc-l"><span></span><span></span><span></span><span></span></span>
+          <span class="bc-t"><span></span><span></span><span></span><span></span></span>
+        </span>
+        <span class="brand-word">VECT<span class="accent-word">UZ</span></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="legal-wrap">
+    <h1>Privacy Policy</h1>
+    <p class="legal-updated">Last updated: [add date when you publish this]</p>
+
+    <p><strong>⚠️ This is a starting template, not legal advice.</strong> It covers the basics for a small Kenyan web-design business collecting contact-form info and running a client portal with Firebase + M-Pesa/card payments. Read it fully, adjust anything that doesn't match how you actually operate, and consider a quick review against Kenya's Data Protection Act 2019 before you rely on it.</p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li>Contact form submissions: name, phone, business name, and message.</li>
+      <li>Client portal accounts: email, name, phone, and project/plan details, stored in Firebase.</li>
+      <li>Payment activity: M-Pesa and card payments are processed by Safaricom (Daraja) and Paystack respectively — we do not store your card number or M-Pesa PIN. We do store payment amounts, status, and references to match invoices to your account.</li>
+    </ul>
+
+    <h2>How we use it</h2>
+    <ul>
+      <li>To reply to enquiries and deliver the web design services you've requested.</li>
+      <li>To run your client portal account and show your project status and payment history.</li>
+      <li>To send project or payment updates via WhatsApp, email, or SMS.</li>
+    </ul>
+
+    <h2>Who we share it with</h2>
+    <p>We don't sell your data. It's shared only with the services that make the portal and payments work: Firebase (Google) for accounts/data storage, Safaricom Daraja for M-Pesa, and Paystack for card payments — each governed by their own privacy policies.</p>
+
+    <h2>Your rights</h2>
+    <p>You can ask us to correct or delete your data at any time by messaging us on WhatsApp or email (contact details below). Deleting your portal account will remove your Firestore record; payment records may be retained where required for financial record-keeping.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy: <a href="mailto:vectuz9@gmail.com">vectuz9@gmail.com</a> or WhatsApp <a href="https://wa.me/254783944907">+254 783 944 907</a>.</p>
+  </main>
+</body>
+</html>
