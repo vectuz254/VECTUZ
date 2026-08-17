@@ -38,6 +38,38 @@ async function signUp(email, password, displayName, phone, plan) {
   if (displayName) {
     await updateProfile(cred.user, { displayName: displayName });
   }
+  await setDoc(doc(db, "clients", cred.user.uid), {
+    name: displayName || "",
+    email: email,
+    phone: phone || "",
+    plan: plan || "Starter",
+    projectStatus: "In progress",
+    approved: false, // flip to true in the Firestore console once you've vetted the client
+    authProvider: "password",
+    createdAt: serverTimestamp()
+  });
+  return cred.user;
+}
+
+// Sign up / sign in with Google — one button handles both cases
+async function googleSignIn() {
+  var provider = new GoogleAuthProvider();
+  var cred = await signInWithPopup(auth, provider);
+  var existing = await getDoc(doc(db, "clients", cred.user.uid));
+  if (!existing.exists()) {
+    await setDoc(doc(db, "clients", cred.user.uid), {
+      name: cred.user.displayName || "",
+      email: cred.user.email || "",
+      phone: "",
+      plan: "Starter",
+      projectStatus: "In progress",
+      approved: false,
+      authProvider: "google",
+      createdAt: serverTimestamp()
+    });
+  }
+  return cred.user;
+}
   // Create their client record in Firestore. doc id == their auth uid,
   // which is what the security rules in firebase-config.js check against.
   await setDoc(doc(db, "clients", cred.user.uid), {
