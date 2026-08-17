@@ -366,3 +366,24 @@
 @media (max-width: 520px){
   .login-card{ padding: 30px 22px 24px; }
 }
+.google-btn{ width:100%; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:16px; }
+.google-btn svg{ flex-shrink:0; }
+
+.login-divider{ display:flex; align-items:center; gap:12px; margin:4px 0 18px; color:var(--muted); font-size:.8rem; }
+.login-divider::before, .login-divider::after{ content:""; flex:1; height:1px; background:var(--border); }
+
+.password-field-wrap{ position:relative; }
+.password-field-wrap input{ padding-right:44px !important; }
+.password-toggle-btn{
+  position:absolute; right:4px; top:50%; transform:translateY(-50%);
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  background:transparent; border:none; color:var(--muted); cursor:pointer; border-radius:8px;
+}
+.password-toggle-btn:hover{ color:var(--text); background:var(--bg); }
+
+.password-rules{ list-style:none; margin:-6px 0 2px; padding:0; display:flex; flex-direction:column; gap:4px; }
+.password-rules[hidden]{ display:none; }
+.password-rules li{ font-size:.78rem; color:var(--muted); padding-left:20px; position:relative; transition:color .2s; }
+.password-rules li::before{ content:"○"; position:absolute; left:0; font-size:.75rem; }
+.password-rules li.is-met{ color:var(--green); }
+.password-rules li.is-met::before{ content:"●"; }
