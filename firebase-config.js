@@ -61,7 +61,7 @@ const db = getFirestore(app);
 export {
   app, auth, db,
   onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut, updateProfile,
+  signOut, updateProfile,GoogleAuthProvider, signInWithPopup,
   doc, setDoc, getDoc, updateDoc, collection, addDoc, serverTimestamp
 };
 
