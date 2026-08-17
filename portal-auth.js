@@ -14,7 +14,7 @@
 import {
   auth, db,
   onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signOut, updateProfile,
+  signOut, updateProfile,GoogleAuthProvider, signInWithPopup,
   doc, setDoc, getDoc, serverTimestamp
 } from "./firebase-config.js";
 
