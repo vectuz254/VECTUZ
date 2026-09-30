@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #090b0e;
+  color: #ffffff;
+}
+
+::selection {
+  background-color: rgba(0, 232, 122, 0.3);
+  color: #ffffff;
+}
+
+@keyframes shiny {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-shiny {
+  animation: shiny 6s linear infinite;
+}
+
+/* Liquid glass utility */
+.liquid-glass {
+  background: rgba(20, 25, 32, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.liquid-glass:hover {
+  border-color: rgba(0, 232, 122, 0.35);
+}
+
+/* Section — Pricing custom classes */
+.c3-pricing-section {
+  position: relative;
+  padding: 5rem 1rem;
+  background-color: transparent;
+}
+
+.c3-watermark-container {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1400px;
+  text-align: center;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.c3-watermark-main {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3rem, 11vw, 9.5rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.12;
+}
+
+.c3-watermark-line-1 {
+  color: #ffffff;
+}
+
+.c3-watermark-line-2 {
+  background: linear-gradient(to right, #04140c 0%, #004d25 25%, #00e87a 65%, #84ffc9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.c3-grid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .c3-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.c3-card {
+  position: relative;
+  background: rgba(20, 25, 32, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  padding: 2.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.c3-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 232, 122, 0.4);
+  box-shadow: 0 20px 40px -15px rgba(0, 232, 122, 0.2);
+}
+
+.c3-card-pro {
+  border-color: rgba(0, 232, 122, 0.5);
+  background: rgba(16, 26, 21, 0.75);
+  box-shadow: 0 0 30px -10px rgba(0, 232, 122, 0.25);
+}
+
+.c3-tier-small {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #00e87a;
+  margin-bottom: 0.5rem;
+}
+
+.c3-tier-large {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.c3-desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.45;
+  margin-bottom: 1.5rem;
+  min-height: 2.6rem;
+}
+
+.c3-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+
+.c3-list li {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  line-height: 1.4;
+}
+
+.c3-check {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 232, 122, 0.15);
+  color: #00e87a;
+  margin-top: 0.1rem;
+}
+
+.c3-btn {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.c3-btn:hover {
+  background: #00e87a;
+  color: #06110b;
+  border-color: #00e87a;
+}
