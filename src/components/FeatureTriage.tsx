@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { SectionEyebrow } from './SectionEyebrow';
 import { Check } from 'lucide-react';
 
 const pillars = [
@@ -54,7 +53,12 @@ export const FeatureTriage: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <SectionEyebrow label="Why VECTUZ" tag="Kenya-Focused" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#00e87a]/30 bg-[#00e87a]/10 text-xs font-semibold text-[#00e87a] tracking-wider uppercase mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00e87a] animate-pulse" />
+            <span>Why VECTUZ</span>
+            <span className="text-white/30">•</span>
+            <span className="text-white/60">Kenya-Focused</span>
+          </div>
 
           <h2 className="mt-5 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-['Playfair_Display',serif]">
             Built for how Kenyan
